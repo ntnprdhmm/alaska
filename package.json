@@ -1,0 +1,29 @@
+{
+  "name": "steganography_conf_website",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "test": "echo \"Error: no test specified\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/prudywsh/steganography_conf_website.git"
+  },
+  "keywords": [],
+  "author": "antoine prudhomme",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/prudywsh/steganography_conf_website/issues"
+  },
+  "homepage": "https://github.com/prudywsh/steganography_conf_website#readme",
+  "dependencies": {
+    "dotenv": "^5.0.1",
+    "express": "^4.16.3"
+  },
+  "devDependencies": {
+    "nodemon": "^1.17.3"
+  }
+}
