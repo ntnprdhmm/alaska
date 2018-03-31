@@ -21,7 +21,9 @@
   "homepage": "https://github.com/prudywsh/steganography_conf_website#readme",
   "dependencies": {
     "dotenv": "^5.0.1",
-    "express": "^4.16.3"
+    "express": "^4.16.3",
+    "mysql2": "^1.5.3",
+    "sequelize": "^4.37.5"
   },
   "devDependencies": {
     "nodemon": "^1.17.3"
