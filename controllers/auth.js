@@ -1,11 +1,8 @@
-const User = require('../models/User')
+const models = require('../models/index')
 
 const register = (req, res) => {
-  User.create(req.body)
-    .then(user => {
-      console.log("------SUCCESS")
-      res.json(user)
-    })
+  models.User.create(req.body)
+    .then(user => res.status(201).json(user))
     .catch(err => {
       return (err.name === 'SequelizeValidationError')
         ? res.status(400).json(err)
