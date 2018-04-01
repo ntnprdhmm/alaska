@@ -2,12 +2,16 @@ require('dotenv').config()
 
 const express = require('express')
 const app = express()
+const bodyParser = require('body-parser')
 
 const db = require('./config/db')
 
-app.get('/', (req, res) => {
-  res.send('hello world !')
-})
+app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.json())
+
+// register api routes
+const routes = require('./config/routes')
+routes(app)
 
 // test database connection
 db.authenticate()
