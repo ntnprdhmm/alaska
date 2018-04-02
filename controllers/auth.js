@@ -2,6 +2,7 @@ const crypto = require('crypto')
 const models = require('../models/index')
 const hashHelper = require('../helpers/hash')
 const jwtHelper = require('../helpers/jwt')
+const mailHelper = require('../helpers/mail')
 
 const register = (req, res) => {
   // check if there is a password in the request's body
@@ -11,11 +12,28 @@ const register = (req, res) => {
   // hash the password, using the generated salt
   hashHelper.hash(req.body.password, salt)
     .then(password => {
-      // put salt and update the password in the request's body
-      const data = Object.assign({}, req.body, {salt, password})
+      // update request body with new fields
+      const data = Object.assign({}, req.body, {
+        salt,
+        password,
+        active: false,
+        verificationToken: crypto.randomBytes(128).toString('hex')
+      })
       // create the new user
       models.User.create(data)
-        .then(user => res.status(201).json(user))
+        .then(user => {
+          // send verification mail
+          mailHelper.send(
+            `Test <${process.env.EMAIL_SENDER}>`,
+            process.env.EMAIL_SENDER,
+            `Vérification de l'adresse email`,
+            `${process.env.SERVER_ROOT}?token=${user.verificationToken}`
+          )
+            .then(_ => res.json())
+            .catch(err => res.status(500).json(err))
+          // return 201, with the email where the verification email has been sent
+          return res.status(201).json({email: user.email})
+        })
         .catch(err => {
           return (err.name === 'SequelizeValidationError')
             ? res.status(400).json(err)

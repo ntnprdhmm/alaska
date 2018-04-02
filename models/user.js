@@ -22,6 +22,13 @@ module.exports = (sequelize, DataTypes) => {
     salt: {
       type: DataTypes.STRING(256),
       allowNull: false
+    },
+    verificationToken: {
+      type: DataTypes.STRING(256),
+      allowNull: false
+    },
+    active: {
+      type: DataTypes.BOOLEAN
     }
   })
 
