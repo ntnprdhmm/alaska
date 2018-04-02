@@ -2,7 +2,9 @@ const jwtHelper = require('../helpers/jwt')
 
 const authMiddleware = (req, res, next) => {
   // exclude the following routes
-  if (req.path === '/auth/login' || req.path === '/auth/register') {
+  if (req.path === '/auth/login' ||
+      req.path === '/auth/register/callback' ||
+      req.path === '/auth/register') {
     return next()
   }
 

@@ -40,10 +40,22 @@ const register = (req, res) => {
             : res.status(500).json(err)
         })
     })
-    .catch(err => {
-      console.log(err)
-      res.status(500).json(err)
+    .catch(err => res.status(500).json(err))
+}
+
+const callback = (req, res) => {
+  // search the user with this token
+  models.User.findOne({where: {verificationToken: req.body.token}})
+    .then(user => {
+      // if he doesn't exists, return error
+      if (!user) return res.status(401).json()
+      // We found him. Let's activate his account
+      user.active = true
+      user.save()
+        .then(_ => res.status(204).json())
+        .catch(err => res.status(500).json(err))
     })
+    .catch(err => res.status(500).json(err))
 }
 
 const login = (req, res) => {
@@ -55,7 +67,13 @@ const login = (req, res) => {
       hashHelper.hash(req.body.password, user.salt)
         .then(hash => {
           // compare it to the hash stored in database
-          if (hash !== user.password) return res.status(401).json()
+          if (hash !== user.password) {
+            return res.status(401).json({message: 'Mot de passe incorrect'})
+          }
+          // check if his account is activated
+          if (!user.active) {
+            return res.status(401).json({message: `Vous n'avez pas activé votre compte.`})
+          }
           // create JWT
           const token = jwtHelper.create({
             email: user.email
@@ -66,4 +84,4 @@ const login = (req, res) => {
     .catch(err => res.status(500).json(err))
 }
 
-module.exports = { register, login }
+module.exports = { register, callback, login }
