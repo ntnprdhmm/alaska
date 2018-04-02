@@ -21,4 +21,4 @@ const create = (payload) => {
   )
 }
 
-module.export = { verify, create }
+module.exports = { verify, create }

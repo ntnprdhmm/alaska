@@ -1,6 +1,7 @@
 const crypto = require('crypto')
 const models = require('../models/index')
 const hashHelper = require('../helpers/hash')
+const jwtHelper = require('../helpers/jwt')
 
 const register = (req, res) => {
   // check if there is a password in the request's body
@@ -36,8 +37,12 @@ const login = (req, res) => {
       hashHelper.hash(req.body.password, user.salt)
         .then(hash => {
           // compare it to the hash stored in database
-          if (hash !== user.password) return res.status(400).json()
-          return res.json(hash)
+          if (hash !== user.password) return res.status(401).json()
+          // create JWT
+          const token = jwtHelper.create({
+            email: user.email
+          })
+          return res.json({ token })
         })
     })
     .catch(err => res.status(500).json(err))
