@@ -32,10 +32,10 @@ const register = (req, res) => {
             .then(_ => res.json())
             .catch(err => res.status(500).json(err))
           // return 201, with the email where the verification email has been sent
-          return res.status(201).json({email: user.email})
+          return res.status(201).json()
         })
         .catch(err => {
-          return (err.name === 'SequelizeValidationError')
+          return (err.name === 'SequelizeUniqueConstraintError' || err.name === 'SequelizeValidationError')
             ? res.status(400).json(err)
             : res.status(500).json(err)
         })
@@ -68,11 +68,11 @@ const login = (req, res) => {
         .then(hash => {
           // compare it to the hash stored in database
           if (hash !== user.password) {
-            return res.status(401).json({message: 'Mot de passe incorrect'})
+            return res.status(401).json({message: 'Wrong password'})
           }
           // check if his account is activated
           if (!user.active) {
-            return res.status(401).json({message: `Vous n'avez pas activé votre compte.`})
+            return res.status(401).json({message: 'You have to activate your account. Check your emails.'})
           }
           // create JWT
           const token = jwtHelper.create({
