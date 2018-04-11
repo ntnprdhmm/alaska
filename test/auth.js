@@ -2,17 +2,14 @@ const expect = require('chai').expect
 const app = require('../app')
 const request = require('supertest')(app)
 const models = require('../models/index')
+const _data = require('./_data')
 
 describe('auth routes', () => {
-  const email = 'user1@utt.fr'
-  const email2 = 'user2@utt.fr'
-  const errorEmail = 'emailyolo'
-  const password = 'azeaze123'
 
   // remove the user we want to create before running the tests
   before(() => {
     return new Promise((resolve, reject) => {
-      models.User.destroy({ where: {email: [email, email2]} })
+      models.User.destroy({ where: {email: [_data.email1, _data.email2]} })
         .then(_ => resolve())
         .catch(_ => resolve())
     })
@@ -20,7 +17,7 @@ describe('auth routes', () => {
 
   it('register a new user', (done) => {
     request.post('/api/auth/register')
-      .send({ email, password })
+      .send({ email: _data.email1, password: _data.password })
       .expect(201)
       .end((err, res) => {
         expect(err).to.be.a('null')
@@ -31,31 +28,31 @@ describe('auth routes', () => {
 
   it('should failed to register a user with existing email', (done) => {
     request.post('/api/auth/register')
-      .send({ email, password })
+      .send({ email: _data.email1, password: _data.password })
       .expect(400, done)
   })
 
   it('should failed to register a user with no email', (done) => {
     request.post('/api/auth/register')
-      .send({ password })
+      .send({ password: _data.password })
       .expect(400, done)
   })
 
   it('should failed to register a user with no password', (done) => {
     request.post('/api/auth/register')
-      .send({ email: email2 })
+      .send({ email: _data.email2 })
       .expect(400, done)
   })
 
   it('should failed to register a user with an incorrect email', (done) => {
     request.post('/api/auth/register')
-      .send({ email: errorEmail, password })
+      .send({ email: _data.emailError, password: _data.password })
       .expect(400, done)
   })
 
   it(`should failed to login a non validated account`, (done) => {
     request.post('/api/auth/login')
-      .send({ email, password })
+      .send({ email: _data.email1, password: _data.password })
       .expect(401)
       .end((err, res) => {
         expect(res.body.message).to.equal('You have to activate your account. Check your emails.')
@@ -64,7 +61,7 @@ describe('auth routes', () => {
   })
 
   it(`validate the new user's account`, (done) => {
-    models.User.findOne({ where: {email} })
+    models.User.findOne({ where: {email: _data.email1} })
       .then(user => {
         request.post('/api/auth/register/callback')
           .send({ token: user.verificationToken })
@@ -78,7 +75,7 @@ describe('auth routes', () => {
   })
 
   it(`shouldn't validate account (fake token)`, (done) => {
-    models.User.findOne({ where: {email} })
+    models.User.findOne({ where: {email: _data.email1} })
       .then(user => {
         request.post('/api/auth/register/callback')
           .send({ token: 'yolo' })
@@ -87,7 +84,7 @@ describe('auth routes', () => {
   })
 
   it('should have activate the user account', (done) => {
-    models.User.findOne({ where: {email} })
+    models.User.findOne({ where: {email: _data.email1} })
       .then(user => {
           expect(user.active).to.be.true
           done()
@@ -96,7 +93,7 @@ describe('auth routes', () => {
 
   it('should return a JWT', (done) => {
     request.post('/api/auth/login')
-      .send({ email, password })
+      .send({ email: _data.email1, password: _data.password })
       .expect(200)
       .end((err, res) => {
         expect(err).to.be.a('null')
@@ -107,7 +104,7 @@ describe('auth routes', () => {
 
   it('should fail to login, because of the password', (done) => {
     request.post('/api/auth/login')
-      .send({ email, password: `${password}wrong` })
+      .send({ email: _data.email1, password: `${_data.password}wrong` })
       .expect(401)
       .end((err, res) => {
         expect(res.body.message).to.equal('Wrong password')
