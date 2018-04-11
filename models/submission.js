@@ -11,6 +11,11 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.TEXT,
       required: true,
       allowNull: false
+    },
+    remoteAddress: {
+      type: DataTypes.STRING,
+      require: true,
+      allowNull: false
     }
   })
 

@@ -1,20 +1,40 @@
 const models = require('../models/index')
+const submissionHelper = require('../helpers/submission')
 
 const submissionMiddleware = (req, res, next) => {
   models.User.findOne({
     where: {email: req.payload.email},
     include: [{
-      model: models.Submission,
-      order: [['createdAt', 'DESC']]
+      model: models.Submission
     }]
   })
     .then(user => {
-      const lastSubmission = user.Submissions[0]
-      // check if the waiting time between 2 submissions has expired
-      if (lastSubmission && (new Date() - process.env.SUBMISSION_WAITING_TIME) < lastSubmission.createdAt) {
-        return res.status(403).json()
+      // get the last submission
+      const lastSub = user.Submissions.sort((a, b) => {
+        return new Date(a.createdAt).getTime() < new Date(b.createdAt).getTime()
+      })[0]
+      // check if the waiting time has expired
+      if (!submissionHelper.isWaitingTimeExpired(lastSub)) {
+        return res.status(403).json({
+          message: 'You have to wait to submit a new response',
+          cause: 'time'
+        })
       }
-      return next()
+      // search all submission from this IP address
+      return models.Submission.findAll({ where: {remoteAddress: req.connection.remoteAddress} })
+        .then(submissions => {
+          // check if any user with this IP address has sent a submission recently
+          for (let submission of submissions) {
+            if (!submissionHelper.isWaitingTimeExpired(submission)) {
+              return res.status(403).json({
+                message: 'You have to wait to submit a new response',
+                cause: 'remote'
+              })
+            }
+          }
+          return next()
+        })
+        .catch(err => res.status(500).json(err))
     })
     .catch(err => res.status(500).json(err))
 }

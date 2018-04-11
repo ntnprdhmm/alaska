@@ -28,7 +28,8 @@ const post = (req, res) => {
       // create the submission in database
       return models.Submission.create({
         UserId: req.user.id,
-        value: req.body.value
+        value: req.body.value,
+        remoteAddress: req.connection.remoteAddress
       })
     })
     .then(sub => res.status(201).json(sub))
