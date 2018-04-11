@@ -1,4 +1,5 @@
 const authMiddleware = require('../middlewares/auth')
+const submissionMiddleware = require('../middlewares/submission')
 
 const authController = require('../controllers/auth')
 const submissionController = require('../controllers/submission')
@@ -6,6 +7,7 @@ const submissionController = require('../controllers/submission')
 module.exports = (app) => {
   // apply middlewares
   app.use('/api', authMiddleware)
+  app.use('/api/submission', submissionMiddleware)
 
   // default route
   app.get('/', (req, res) => {

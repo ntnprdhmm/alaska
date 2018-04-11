@@ -8,7 +8,9 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER
     },
     value: {
-      type: DataTypes.TEXT
+      type: DataTypes.TEXT,
+      required: true,
+      allowNull: false
     }
   })
 

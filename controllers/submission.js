@@ -19,13 +19,19 @@ const post = (req, res) => {
   // read the content of the file
   fileHelper.read(challengeFile)
     .then(content => {
-      // check if the submission's value matches the answer
-      if (!req.body.value || (content.length !== req.body.value.length)) {
+      const submission = req.body.value.split(';')
+      // check if the submission's string matches the answer
+      if (content.length !== submission.length) {
         return res.status(400).json()
       }
 
-      res.json({ content })
+      // create the submission in database
+      return models.Submission.create({
+        UserId: req.user.id,
+        value: req.body.value
+      })
     })
+    .then(sub => res.status(201).json(sub))
     .catch(err => res.status(500).json(err))
 }
 

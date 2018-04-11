@@ -1,4 +1,5 @@
 const jwtHelper = require('../helpers/jwt')
+const models = require('../models/index')
 
 const authMiddleware = (req, res, next) => {
   // exclude the following routes
@@ -17,6 +18,11 @@ const authMiddleware = (req, res, next) => {
   jwtHelper.verify(token)
     .then(payload => {
       req.payload = payload
+      // fetch the User
+      return models.User.findOne({where: {email: payload.email}})
+    })
+    .then(user => {
+      req.user = user
       return next()
     })
     .catch(err => res.status(401).json(err))
