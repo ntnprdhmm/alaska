@@ -1,5 +1,7 @@
-const authController = require('../controllers/auth')
 const authMiddleware = require('../middlewares/auth')
+
+const authController = require('../controllers/auth')
+const submissionController = require('../controllers/submission')
 
 module.exports = (app) => {
   // apply middlewares
@@ -19,7 +21,6 @@ module.exports = (app) => {
     .post(authController.login)
 
   // submissions routes
-  app.post('/api/submission', (req, res) => {
-    res.send('submission ok')
-  })
+  app.route('/api/submission')
+    .post(submissionController.post)
 }
