@@ -18,7 +18,7 @@ const post = (req, res) => {
 
   // if no file, return error
   if (!challengeFile) {
-    return res.status(410).json()
+    return res.status(403).json()
   }
 
   // read the content of the file

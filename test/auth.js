@@ -8,13 +8,16 @@ describe('auth routes', () => {
   // remove the user we want to create before running the tests
   before(() => {
     return new Promise((resolve, reject) => {
-      models.User.destroy({ where: {email: [_data.email1, _data.email2]} })
-        .then(_ => resolve())
-        .catch(_ => resolve())
+      models.Submission.destroy({ where: {} })
+        .then(_ => {
+          return models.User.destroy({ where: {email: [_data.email1, _data.email3, _data.email2]} })
+            .then(_ => resolve())
+            .catch(_ => resolve())
+        })
     })
   })
 
-  it('register a new user', (done) => {
+  it('should register user 1', (done) => {
     request.post('/api/auth/register')
       .send({ email: _data.email1, password: _data.password })
       .expect(201)
@@ -25,7 +28,35 @@ describe('auth routes', () => {
       })
   })
 
-  it('should failed to register a user with existing email', (done) => {
+  it('should failed to register user 2 without password', (done) => {
+    request.post('/api/auth/register')
+      .send({ email: _data.email2 })
+      .expect(400, done)
+  })
+
+  it('should register user 2', (done) => {
+    request.post('/api/auth/register')
+      .send({ email: _data.email2, password: _data.password })
+      .expect(201)
+      .end((err, res) => {
+        expect(err).to.be.a('null')
+        expect(res.body).to.eql('')
+        done()
+      })
+  })
+
+  it('should register user 3', (done) => {
+    request.post('/api/auth/register')
+      .send({ email: _data.email3, password: _data.password })
+      .expect(201)
+      .end((err, res) => {
+        expect(err).to.be.a('null')
+        expect(res.body).to.eql('')
+        done()
+      })
+  })
+
+  it('should failed to register user 1 again (email already exists)', (done) => {
     request.post('/api/auth/register')
       .send({ email: _data.email1, password: _data.password })
       .expect(400, done)
@@ -37,19 +68,13 @@ describe('auth routes', () => {
       .expect(400, done)
   })
 
-  it('should failed to register a user with no password', (done) => {
-    request.post('/api/auth/register')
-      .send({ email: _data.email2 })
-      .expect(400, done)
-  })
-
   it('should failed to register a user with an incorrect email', (done) => {
     request.post('/api/auth/register')
       .send({ email: _data.emailError, password: _data.password })
       .expect(400, done)
   })
 
-  it(`should failed to login a non validated account`, (done) => {
+  it(`should failed to authenticate a not validated account`, (done) => {
     request.post('/api/auth/login')
       .send({ email: _data.email1, password: _data.password })
       .expect(401)
@@ -59,7 +84,7 @@ describe('auth routes', () => {
       })
   })
 
-  it(`validate the new user's account`, (done) => {
+  it(`should validate the account of user 1`, (done) => {
     models.User.findOne({ where: {email: _data.email1} })
       .then(user => {
         request.post('/api/auth/register/callback')
@@ -73,7 +98,21 @@ describe('auth routes', () => {
       })
   })
 
-  it(`shouldn't validate account (fake token)`, (done) => {
+  it(`should validate the account of user 3`, (done) => {
+    models.User.findOne({ where: {email: _data.email3} })
+      .then(user => {
+        request.post('/api/auth/register/callback')
+          .send({ token: user.verificationToken })
+          .expect(204)
+          .end((err, res) => {
+            expect(err).to.be.a('null')
+            expect(res.body).to.eql({})
+            done()
+          })
+      })
+  })
+
+  it(`shouldn't validate account if the token is invalid`, (done) => {
     models.User.findOne({ where: {email: _data.email1} })
       .then(user => {
         request.post('/api/auth/register/callback')
@@ -82,7 +121,7 @@ describe('auth routes', () => {
       })
   })
 
-  it('should have activate the user account', (done) => {
+  it('should have activate the account of user 1', (done) => {
     models.User.findOne({ where: {email: _data.email1} })
       .then(user => {
           expect(user.active).to.be.true
@@ -90,7 +129,23 @@ describe('auth routes', () => {
       })
   })
 
-  it('should return a JWT', (done) => {
+  it(`shouldn't have activate the account of user 2`, (done) => {
+    models.User.findOne({ where: {email: _data.email2} })
+      .then(user => {
+          expect(user.active).to.be.false
+          done()
+      })
+  })
+
+  it('should have activate the account of user 3', (done) => {
+    models.User.findOne({ where: {email: _data.email3} })
+      .then(user => {
+          expect(user.active).to.be.true
+          done()
+      })
+  })
+
+  it('should authenticate user 1', (done) => {
     request.post('/api/auth/login')
       .send({ email: _data.email1, password: _data.password })
       .expect(200)
@@ -101,12 +156,22 @@ describe('auth routes', () => {
       })
   })
 
-  it('should fail to login, because of the password', (done) => {
+  it('should fail to authenticate user 1 with a wrong password', (done) => {
     request.post('/api/auth/login')
       .send({ email: _data.email1, password: `${_data.password}wrong` })
       .expect(401)
       .end((err, res) => {
         expect(res.body.message).to.equal('Wrong password')
+        done()
+      })
+  })
+
+  it('should fail to authenticate user 2 because his account is not active', (done) => {
+    request.post('/api/auth/login')
+      .send({ email: _data.email2, password: `${_data.password}` })
+      .expect(401)
+      .end((err, res) => {
+        expect(res.body.message).to.equal('You have to activate your account. Check your emails.')
         done()
       })
   })
