@@ -2,6 +2,11 @@ const models = require('../models/index')
 const fileHelper = require('../helpers/file')
 
 const post = (req, res) => {
+  // if submission empty, return error
+  if (!req.body.value) {
+    return res.status(400).json()
+  }
+
   // get the current challenge answer
   const currentDate = new Date().getTime() / 1000
   let challengeFile = null
@@ -19,12 +24,6 @@ const post = (req, res) => {
   // read the content of the file
   fileHelper.read(challengeFile)
     .then(content => {
-      const submission = req.body.value.split(';')
-      // check if the submission's string matches the answer
-      if (content.length !== submission.length) {
-        return res.status(400).json()
-      }
-
       // create the submission in database
       return models.Submission.create({
         UserId: req.user.id,

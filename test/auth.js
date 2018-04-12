@@ -5,7 +5,6 @@ const models = require('../models/index')
 const _data = require('./_data')
 
 describe('auth routes', () => {
-
   // remove the user we want to create before running the tests
   before(() => {
     return new Promise((resolve, reject) => {
