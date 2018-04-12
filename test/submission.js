@@ -40,8 +40,12 @@ describe('submission routes', () => {
       it('should submit for stage 1', (done) => {
         request.post('/api/submission')
           .set('authorization', `Bearer ${jwt}`)
-          .send({ value: 'img_1;img_2;img_3;img_4;img_5;img_6' })
-          .expect(201, done)
+          .send({ value: '1;2;3;4;5;6' })
+          .expect(201)
+          .end((_, res) => {
+            expect(res.body.stage).to.equal(1)
+            done()
+          })
       })
 
       it(`shouldn't submit before stage 1: value is undefined)`, (done) => {
@@ -82,10 +86,12 @@ describe('submission routes', () => {
       it('should submit for stage 2', (done) => {
         request.post('/api/submission')
           .set('authorization', `Bearer ${jwt}`)
-          .send({ value: 'img_1;img_2;img_3;img_4;img_5;img_6;img_7;img_8;img_9;' +
-            'img_10;img_11;img_12;img_13;img_14;img_15;img_16;img_17;img_18;' +
-            'img_19;img_20' })
-          .expect(201, done)
+          .send({ value: '1;2;3;4;5;6;7;8;9;10;11;12;13;14;15;16;17;18;19;20' })
+          .expect(201)
+          .end((_, res) => {
+            expect(res.body.stage).to.equal(2)
+            done()
+          })
       })
 
       it(`shouldn't submit before stage 2: value is undefined)`, (done) => {
@@ -127,7 +133,7 @@ describe('submission routes', () => {
       it(`shouldn't submit before stage 1 `, (done) => {
         request.post('/api/submission')
           .set('authorization', `Bearer ${jwt}`)
-          .send({ value: 'img_1;img_2;img_3;img_4;img_5;img_6' })
+          .send({ value: '1;2;3;4;5;6' })
           .expect(403, done)
       })
 
@@ -156,7 +162,7 @@ describe('submission routes', () => {
       it(`shouldn't submit after stage 1 and before stage 2`, (done) => {
         request.post('/api/submission')
           .set('authorization', `Bearer ${jwt}`)
-          .send({ value: 'img_1;img_2;img_3;img_4;img_5;img_6' })
+          .send({ value: '1;2;3;4;5;6' })
           .expect(403, done)
       })
 
@@ -185,7 +191,7 @@ describe('submission routes', () => {
       it(`shouldn't submit after stage 2`, (done) => {
         request.post('/api/submission')
           .set('authorization', `Bearer ${jwt}`)
-          .send({ value: 'img_1;img_2;img_3;img_4;img_5;img_6' })
+          .send({ value: '1;2;3;4;5;6' })
           .expect(403, done)
       })
 
@@ -201,9 +207,7 @@ describe('submission routes', () => {
     it('should work with an active account', (done) => {
       request.post('/api/submission')
         .set('authorization', `Bearer ${jwt}`)
-        .send({ value: 'img_1;img_2;img_3;img_4;img_5;img_6;img_7;img_8;img_9;' +
-          'img_10;img_11;img_12;img_13;img_14;img_15;img_16;img_17;img_18;' +
-          'img_19;img_20' })
+        .send({ value: '1;2;3;4;5;6;7;8;9;10;11;12;13;14;15;16;17;18;19;20' })
         .expect(201, done)
     })
 
@@ -221,27 +225,13 @@ describe('submission routes', () => {
     it(`shouldn't work with an other active account on the same @IP`, (done) => {
       request.post('/api/submission')
         .set('authorization', `Bearer ${jwt3}`)
-        .send({ value: 'img_1;img_2;img_3;img_4;img_5;img_6;img_7;img_8;img_9;' +
-          'img_10;img_11;img_12;img_13;img_14;img_15;img_16;img_17;img_18;' +
-          'img_19;img_20' })
+        .send({ value: '1;2;3;4;5;6;7;8;9;10;11;12;13;14;15;16;17;18;19;20' })
         .expect(403)
         .end((_, res) => {
           expect(res.body.cause).to.be.equal('remote')
           done()
         })
     })
-
-    /*
-    it('should work with an other active account on another @IP', (done) => {
-      request.post('/api/submission')
-        .set('authorization', `Bearer ${jwt3}`)
-        .set('Remote-Addr', '8.8.8.8')
-        .send({ value: 'img_1;img_2;img_3;img_4;img_5;img_6;img_7;img_8;img_9;' +
-          'img_10;img_11;img_12;img_13;img_14;img_15;img_16;img_17;img_18;' +
-          'img_19;img_20' })
-        .expect(201, done)
-    })
-    */
 
   })
 
