@@ -2,6 +2,14 @@ const models = require('../models/index')
 const submissionHelper = require('../helpers/submission')
 
 const submissionMiddleware = (req, res, next) => {
+  // check if submissions are not blocked
+  if (process.env.BLOCK_SUBMISSION.toLowerCase() === 'true') {
+    return res.status(403).json({
+      message: 'Submissions are blocked for the moment',
+      cause: 'blocked'
+    })
+  }
+
   models.User.findOne({
     where: {email: req.payload.email},
     include: [{

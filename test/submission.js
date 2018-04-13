@@ -68,9 +68,10 @@ describe('submission routes', () => {
     })
 
     describe('stage 2', () => {
+      let savedEnv
       // override env variables
       before(() => {
-        env = process.env
+        savedEnv = process.env
         // - stage 1 ended 2 months ago
         // - stage 2 started 1 month ago and end in 1 month
         process.env = Object.assign({}, process.env, {
@@ -109,15 +110,15 @@ describe('submission routes', () => {
 
       // restoring env
       after(() => {
-        process.env = env
+        process.env = savedEnv
       })
     })
 
     describe('before stage 1', () => {
-      let localEnv
+      let savedEnv
       // override env variables
       before(() => {
-        localEnv = process.env
+        savedEnv = process.env
         // - stage 1 ended 2 months ago
         // - stage 2 started 1 month ago and end in 1 month
         process.env = Object.assign({}, process.env, {
@@ -138,15 +139,15 @@ describe('submission routes', () => {
       })
 
       after(() => {
-        process.env = localEnv
+        process.env = savedEnv
       })
     })
 
     describe('between stage 1 and stage 2', () => {
-      let localEnv
+      let savedEnv
       // override env variables
       before(() => {
-        localEnv = process.env
+        savedEnv = process.env
         // - stage 1 ended 2 months ago
         // - stage 2 started 1 month ago and end in 1 month
         process.env = Object.assign({}, process.env, {
@@ -167,15 +168,15 @@ describe('submission routes', () => {
       })
 
       after(() => {
-        process.env = localEnv
+        process.env = savedEnv
       })
     })
 
     describe('after stage 2', () => {
-      let localEnv
+      let savedEnv
       // override env variables
       before(() => {
-        localEnv = process.env
+        savedEnv = process.env
         // - stage 1 ended 2 months ago
         // - stage 2 started 1 month ago and end in 1 month
         process.env = Object.assign({}, process.env, {
@@ -196,7 +197,7 @@ describe('submission routes', () => {
       })
 
       after(() => {
-        process.env = localEnv
+        process.env = savedEnv
       })
     })
 
@@ -233,6 +234,31 @@ describe('submission routes', () => {
         })
     })
 
+  })
+
+  describe('submission are blocked', () => {
+    let savedEnv
+
+    before(() => {
+      savedEnv = process.env
+      // test syntax of 'true' too
+      process.env.BLOCK_SUBMISSION = "tRue"
+    })
+
+    it ('should block the submission', (done) => {
+      request.post('/api/submission')
+        .set('authorization', `Bearer ${jwt3}`)
+        .send({ value: '1;2;3;4;5;6;7;8;9;10;11;12;13;14;15;16;17;18;19;20' })
+        .expect(403)
+        .end((_, res) => {
+          expect(res.body.cause).to.be.equal('blocked')
+          done()
+        })
+    })
+
+    after(() => {
+      process.env = savedEnv
+    })
   })
 
 })
