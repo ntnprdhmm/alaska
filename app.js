@@ -8,7 +8,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
 // register api routes
-const routes = require('./config/routes')
+const routes = require('./server/config/routes')
 routes(app)
 
 // run server

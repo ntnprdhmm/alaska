@@ -1,8 +1,8 @@
 const expect = require('chai').expect
 const app = require('../app')
 const request = require('supertest')(app)
-const jwtHelper = require('../helpers/jwt')
-const models = require('../models/index')
+const jwtHelper = require('../server/helpers/jwt')
+const models = require('../server/models/index')
 const _data = require('./_data')
 
 const monthInMS = 2592000000
@@ -30,10 +30,10 @@ describe('submission routes', () => {
         process.env = Object.assign({}, process.env, {
           STAGE_1_START: (now - monthInMS) / 1000,
           STAGE_1_END: (now + monthInMS) / 1000,
-          STAGE_1_FILE: 'test/answers/1.txt',
+          STAGE_1_FILE: '../test/answers/1.txt',
           STAGE_2_START: (now + (2 * monthInMS)) / 1000,
           STAGE_2_END: (now + (3 * monthInMS)) / 1000,
-          STAGE_2_FILE: 'test/answers/2.txt'
+          STAGE_2_FILE: '../test/answers/2.txt'
         })
       })
 
@@ -42,7 +42,8 @@ describe('submission routes', () => {
           .set('authorization', `Bearer ${jwt}`)
           .send({ value: '1;2;3;4;5;6' })
           .expect(201)
-          .end((_, res) => {
+          .end((err, res) => {
+            expect(err).to.be.a('null')
             expect(res.body.stage).to.equal(1)
             done()
           })
@@ -77,10 +78,10 @@ describe('submission routes', () => {
         process.env = Object.assign({}, process.env, {
           STAGE_1_START: (now - (3 * monthInMS)) / 1000,
           STAGE_1_END: (now - (2 * monthInMS)) / 1000,
-          STAGE_1_FILE: 'test/answers/1.txt',
+          STAGE_1_FILE: '../test/answers/1.txt',
           STAGE_2_START: (now - monthInMS) / 1000,
           STAGE_2_END: (now + monthInMS) / 1000,
-          STAGE_2_FILE: 'test/answers/2.txt'
+          STAGE_2_FILE: '../test/answers/2.txt'
         })
       })
 
@@ -89,7 +90,8 @@ describe('submission routes', () => {
           .set('authorization', `Bearer ${jwt}`)
           .send({ value: '1;2;3;4;5;6;7;8;9;10;11;12;13;14;15;16;17;18;19;20' })
           .expect(201)
-          .end((_, res) => {
+          .end((err, res) => {
+            expect(err).to.be.a('null')
             expect(res.body.stage).to.equal(2)
             done()
           })

@@ -1,7 +1,7 @@
 const expect = require('chai').expect
 const app = require('../app')
 const request = require('supertest')(app)
-const models = require('../models/index')
+const models = require('../server/models/index')
 const _data = require('./_data')
 
 describe('auth routes', () => {

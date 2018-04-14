@@ -1,8 +1,8 @@
 const expect = require('chai').expect
 const app = require('../app')
 const request = require('supertest')(app)
-const jwtHelper = require('../helpers/jwt')
-const models = require('../models/index')
+const jwtHelper = require('../server/helpers/jwt')
+const models = require('../server/models/index')
 const _data = require('./_data')
 
 const jwt = jwtHelper.create({ email: _data.email1 })
