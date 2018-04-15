@@ -9,3 +9,10 @@ export function remove () {
     type: 'REMOVE'
   }
 }
+
+export function toggleSideNav (value) {
+  return {
+    type: 'TOGGLE_SIDE_NAV',
+    value
+  }
+}

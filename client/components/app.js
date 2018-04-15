@@ -1,7 +1,4 @@
 import { h, Component } from 'preact'
-import { connect } from 'preact-redux'
-import reduce from '../reducer'
-import * as actions from '../actions'
 
 import Nav from './nav'
 import Header from './header'
@@ -13,9 +10,8 @@ import Submit from './submit'
 
 import '../style/theme.css'
 
-@connect(reduce, actions)
 class App extends Component {
-  render({n}, {}) {
+  render() {
     return (
       <div class="main-container">
         <Nav />
