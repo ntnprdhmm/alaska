@@ -1,17 +1,17 @@
 const initialState = {
-  n: 0,
-  sideNavOpen: false
+  showSideNav: false,
+  showLoginModal: false
 }
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case 'ADD':
-      return Object.assign({}, state, {n: state.n+1})
-    case 'REMOVE':
-      return Object.assign({}, state, {n: state.n-1})
     case 'TOGGLE_SIDE_NAV':
       return Object.assign({}, state, {
-        sideNavOpen: action.value !== undefined ? action.value : !state.sideNavOpen
+        showSideNav: action.value !== undefined ? action.value : !state.sideNavOpen
+      })
+    case 'TOGGLE_LOGIN_MODAL':
+      return Object.assign({}, state, {
+        showLoginModal: !state.showLoginModal
       })
     default:
       return state

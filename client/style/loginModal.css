@@ -1,0 +1,22 @@
+.login-modal-wrapper {
+  position: fixed;
+  background-color: rgba(10, 10, 10, 0.70);
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 999998;
+}
+
+.login-modal {
+  position: fixed;
+  z-index: 999999;
+  background-color: black;
+  border: 2px solid #42DCA3;
+
+  width: 80%;
+  left: 10%;
+  right: 10%;
+  top: 10%;
+  min-height: 80%;
+}

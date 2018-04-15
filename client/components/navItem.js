@@ -6,11 +6,11 @@ import * as actions from '../actions'
 @connect(reduce, actions)
 class navItem extends Component {
   closeSideNav () {
-    if (this.props.sideNavOpen) {
+    if (this.props.showSideNav) {
       this.props.toggleSideNav(false)
     }
   }
-  render({sideNavOpen}, {}) {
+  render({showSideNav}, {}) {
     return (
       <li class="nav-item">
         <a class="nav-link" href={`#${this.props.itemId}`} onClick={this.closeSideNav.bind(this)}>
