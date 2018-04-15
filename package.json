@@ -4,9 +4,10 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js",
-    "dev": "nodemon app.js",
-    "test": "mocha"
+    "start": "preact build --src client && node app.js",
+    "dev": "preact watch --src client && nodemon app.js",
+    "test": "mocha",
+    "build": "preact build --src client"
   },
   "repository": {
     "type": "git",
@@ -28,11 +29,15 @@
     "mocha": "^5.0.5",
     "mysql2": "^1.5.3",
     "nodemailer": "^4.6.4",
+    "preact": "^8.2.7",
+    "preact-redux": "^2.0.3",
+    "redux": "^3.7.2",
     "sequelize": "^4.37.5",
     "sequelize-cli": "^4.0.0",
     "supertest": "^3.0.0"
   },
   "devDependencies": {
-    "nodemon": "^1.17.3"
+    "nodemon": "^1.17.3",
+    "preact-cli": "^2.2.1"
   }
 }
