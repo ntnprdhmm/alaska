@@ -1,13 +1,13 @@
 {
-  "name": "steganography_conf_website",
+  "name": "alaska",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "preact build --src client && node app.js",
-    "dev": "preact watch --src client && nodemon app.js",
+    "start": "preact build --src client --template client/template.html && node app.js",
+    "dev": "preact watch --src client --template client/template.html && nodemon app.js",
     "test": "mocha",
-    "build": "preact build --src client"
+    "build": "preact build --src client --template client/template.html"
   },
   "repository": {
     "type": "git",
