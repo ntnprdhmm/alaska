@@ -6,6 +6,10 @@
   bottom: 0;
   left: 0;
   z-index: 999998;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .login-modal {
@@ -14,11 +18,10 @@
   background-color: black;
   border: 2px solid #42DCA3;
 
-  width: 80%;
-  left: 10%;
-  right: 10%;
-  top: 10%;
-  min-height: 80%;
+  width: 100%;
+  max-width: 800px;
+
+  padding-bottom: 15px;
 }
 
 .login-modal-tab-title {

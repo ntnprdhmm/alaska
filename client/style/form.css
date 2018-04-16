@@ -15,12 +15,21 @@ input.form-control, input.form-control:focus {
   font-weight: 700;
 }
 
+.form-group {
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
 input.form-control:focus {
   border-color: inherit;
   -webkit-box-shadow: none;
   box-shadow: none;
 }
 
-.text-muted {
-  color: #fff !important;
+.login-btn-group {
+  text-align: center;
+}
+
+.login-btn-group *:not(:first-child) {
+  margin-left: 30px;
 }
