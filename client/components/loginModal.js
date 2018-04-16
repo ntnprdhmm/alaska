@@ -34,7 +34,7 @@ class LoginModal extends Component {
               <LoginModalTab text='Login' active={this.state.tab} tabName='login' onClick={this.changeTab.bind(this)} />
               <LoginModalTab text='Register' active={this.state.tab} tabName='register' onClick={this.changeTab.bind(this)} />
             </div>
-            <div class="row">
+            <div class="form-wrapper">
               {this.state.tab === 'register' ? <Register /> : <Login />}
             </div>
           </div>

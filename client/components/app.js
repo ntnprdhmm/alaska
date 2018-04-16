@@ -13,6 +13,7 @@ import Submit from './submit'
 import LoginModal from './loginModal'
 
 import '../style/theme.css'
+import '../style/form.css'
 
 @connect(reduce, actions)
 class App extends Component {

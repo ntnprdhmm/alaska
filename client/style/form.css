@@ -1,0 +1,26 @@
+input.form-control {
+  border-radius: 0;
+  padding: 12px 20px;
+}
+
+input.form-control, input.form-control:focus {
+  background: #424242;
+  color: #fff;
+  border: none;
+}
+
+.form-group label {
+  text-transform: uppercase;
+  color: #42DCA3;
+  font-weight: 700;
+}
+
+input.form-control:focus {
+  border-color: inherit;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
+.text-muted {
+  color: #fff !important;
+}
