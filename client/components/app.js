@@ -11,9 +11,11 @@ import Footer from './footer'
 import LeaderBoard from './leaderBoard'
 import Submit from './submit'
 import LoginModal from './loginModal'
+import ToastContainer from './toastContainer'
 
 import '../style/theme.css'
 import '../style/form.css'
+import '../style/toast.css'
 
 @connect(reduce, actions)
 class App extends Component {
@@ -27,6 +29,7 @@ class App extends Component {
         <Submit />
         <LeaderBoard />
         <Footer />
+        <ToastContainer />
         {this.props.showLoginModal ? <LoginModal /> : null}
       </div>
     )

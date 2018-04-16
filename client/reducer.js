@@ -1,6 +1,7 @@
 const initialState = {
   showSideNav: false,
-  showLoginModal: false
+  showLoginModal: false,
+  toasts: [{type: 'success', text: 'hello world'}, {type: 'error', text: 'hello world 2'}]
 }
 
 const reducer = (state = initialState, action) => {
@@ -12,6 +13,10 @@ const reducer = (state = initialState, action) => {
     case 'TOGGLE_LOGIN_MODAL':
       return Object.assign({}, state, {
         showLoginModal: !state.showLoginModal
+      })
+    case 'CLOSE_TOAST':
+      return Object.assign({}, state, {
+        toasts: state.toasts.filter((e, i) => i !== action.key)
       })
     default:
       return state

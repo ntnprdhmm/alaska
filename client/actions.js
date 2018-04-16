@@ -10,3 +10,10 @@ export function toggleLoginModal () {
     type: 'TOGGLE_LOGIN_MODAL'
   }
 }
+
+export function closeToast (key) {
+  return {
+    type: 'CLOSE_TOAST',
+    key
+  }
+}
