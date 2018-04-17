@@ -1,3 +1,5 @@
+import { myFetch } from './helpers/fetch'
+
 export function toggleSideNav (value) {
   return {type: 'TOGGLE_SIDE_NAV', value}
 }
@@ -24,13 +26,7 @@ export function registerSuccess (jwt) {
 
 export const login = (body) => {
   return dispatch => {
-    fetch('/api/auth/login', {
-      headers: {
-        'Content-type': 'application/json'
-      },
-      method: 'POST',
-      body: JSON.stringify(body)
-    })
+    myFetch('/api/auth/login', 'POST', body)
       .then(jwt => dispatch(loginSuccess(jwt)))
       .catch(_ => dispatch(createToast('error', 'Failed to login')))
   }
@@ -38,13 +34,7 @@ export const login = (body) => {
 
 export const register = (body) => {
   return dispatch => {
-    fetch('/api/auth/register', {
-      headers: {
-        'Content-type': 'application/json'
-      },
-      method: 'POST',
-      body: JSON.stringify(body)
-    })
+    myFetch('/api/auth/register', 'POST', body)
       .then(jwt => dispatch(registerSuccess(jwt)))
       .catch(_ => dispatch(createToast('error', 'Failed to register')))
   }
