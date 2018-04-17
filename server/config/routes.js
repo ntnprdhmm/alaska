@@ -9,11 +9,6 @@ module.exports = (app) => {
   app.use('/api', authMiddleware)
   app.use('/api/submission', submissionMiddleware)
 
-  // default route
-  app.get('/', (req, res) => {
-    res.send('hello world !')
-  })
-
   // auth routes
   app.route('/api/auth/register')
     .post(authController.register)

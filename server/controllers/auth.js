@@ -24,9 +24,9 @@ const register = (req, res) => {
         .then(user => {
           // send verification mail
           mailHelper.send(
-            `Test <${process.env.EMAIL_SENDER}>`,
-            process.env.EMAIL_SENDER,
-            `Vérification de l'adresse email`,
+            `Alaska <${process.env.EMAIL_SENDER}>`,
+            user.email,
+            `email confirmation`,
             `${process.env.SERVER_ROOT}?token=${user.verificationToken}`
           )
             .then(_ => res.json())
