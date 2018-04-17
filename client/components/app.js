@@ -19,6 +19,15 @@ import '../style/toast.css'
 
 @connect(reduce, actions)
 class App extends Component {
+  componentDidMount() {
+    // check if there is a verification token in the URI
+    const queryString = window.location.href.split('?')[1] || ''
+    const tokenRegex = new RegExp(/^token/)
+    const token = queryString.split('&').filter(p => p.match(tokenRegex))
+    if (token.length) {
+      this.props.sendVerificationtToken(token[0].split('=')[1])
+    }
+  }
   render() {
     return (
       <div class="main-container">
