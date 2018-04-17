@@ -21,7 +21,7 @@
   padding: 0 10px;
   box-sizing: border-box;
   transition: height 1s;
-  z-index: 100;
+  z-index: 9999999;
   list-style: none;
 }
 
