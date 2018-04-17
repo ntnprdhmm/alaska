@@ -27,6 +27,11 @@ class App extends Component {
     if (token.length) {
       this.props.sendVerificationtToken(token[0].split('=')[1])
     }
+    // check if there is a jwt in localStorage
+    const jwt = localStorage.getItem('jwt')
+    if (jwt) {
+      this.props.loginBack(jwt)
+    }
   }
   render() {
     return (

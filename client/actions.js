@@ -1,3 +1,4 @@
+const jwtDecode = require('jwt-decode')
 import { myFetch } from './helpers/fetch'
 
 export function toggleSideNav (value) {
@@ -13,21 +14,31 @@ export function closeToast (key) {
 }
 
 export function createToast (toastType, toastText) {
+  console.log(toastText)
   return {type: 'CREATE_TOAST', toastType, toastText}
 }
 
-export function loginSuccess (jwt) {
-  return {type: 'LOGIN_SUCCESS', jwt}
+export function loginSuccess (jwt, jwtPayload) {
+  return {type: 'LOGIN_SUCCESS', jwt, jwtPayload}
 }
 
 export function registerSuccess () {
   return {type: 'REGISTER_SUCCESS'}
 }
 
+export const loginBack = (jwt) => {
+  const payload = jwtDecode(jwt)
+  return dispatch => {
+    dispatch(loginSuccess(jwt, payload))
+    dispatch(createToast('success', `Welcome back ! Your logged as ${payload.email} `))
+  }
+}
+
 export const login = (body) => {
   return dispatch => {
     myFetch('/api/auth/login', 'POST', body)
-      .then(jwt => dispatch(loginSuccess(jwt)))
+      .then(data => data.json())
+      .then(data => dispatch(loginSuccess(data.token, jwtDecode(data.token))))
       .then(_ => dispatch(createToast('success', 'You are now logged.')))
       .catch(_ => dispatch(createToast('error', 'Failed to login')))
   }
@@ -37,7 +48,7 @@ export const register = (body) => {
   return dispatch => {
     myFetch('/api/auth/register', 'POST', body)
       .then(_ => dispatch(registerSuccess()))
-      .then(jwt => dispatch(createToast('success', 'Account created ! Check ' +
+      .then(_ => dispatch(createToast('success', 'Account created ! Check ' +
         'your emails to verify the provided email address.')))
       .catch(_ => dispatch(createToast('error', 'Failed to register')))
   }

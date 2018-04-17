@@ -14,10 +14,15 @@ const reducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         showLoginModal: !state.showLoginModal
       })
-    case 'LOGIN_SUCCESS':
     case 'REGISTER_SUCCESS':
       return Object.assign({}, state, {
         showLoginModal: false
+      })
+    case 'LOGIN_SUCCESS':
+      localStorage.setItem('jwt', action.jwt)
+      return Object.assign({}, state, {
+        showLoginModal: false,
+        jwtPayload: action.jwtPayload
       })
     case 'CLOSE_TOAST':
       return Object.assign({}, state, {

@@ -8,7 +8,8 @@
 const myFetch = (uri, method, body) => {
   const init = {
     headers: {
-      'Content-type': 'application/json'
+      'Content-type': 'application/json',
+      'Authorization': `Bearer ${localStorage.getItem('jwt')}`
     },
     method
   }
