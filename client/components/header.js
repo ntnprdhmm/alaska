@@ -15,7 +15,7 @@ class Header extends Component {
                   Created by Start Bootstrap.
                 </p>
                 <a href="#about" class="btn btn-circle js-scroll-trigger">
-                  <i class="fa fa-angle-double-down animated"></i>
+                  <span class="oi oi-chevron-bottom" title="chevron-bottom"></span>
                 </a>
               </div>
             </div>
