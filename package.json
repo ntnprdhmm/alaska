@@ -37,6 +37,7 @@
     "nodemailer": "^4.6.4",
     "preact": "^8.2.7",
     "preact-redux": "^2.0.3",
+    "react-scrollable-anchor": "^0.6.1",
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0",
     "sequelize": "^4.37.5",

@@ -21,7 +21,7 @@ class Nav extends Component {
   render ({showSideNav}, {}) {
     return (
       <nav class={`navbar navbar-expand-lg navbar-light fixed-top ${this.state.black ? 'navbar-shrink' : ''}`} id="mainNav">
-          <a class="navbar-brand" href="#">ALASKA</a>
+          <a class="navbar-brand" href="#top">ALASKA</a>
           <button class="navbar-toggler navbar-toggler-right" onClick={this.props.toggleSideNav}>
             Menu
             <i class="fa fa-bars"></i>
