@@ -1,7 +1,8 @@
 const initialState = {
   showSideNav: false,
   showLoginModal: false,
-  toasts: []
+  toasts: [],
+  jwtPayload: null
 }
 
 const reducer = (state = initialState, action) => {
@@ -23,6 +24,11 @@ const reducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         showLoginModal: false,
         jwtPayload: action.jwtPayload
+      })
+    case 'LOGOUT':
+      localStorage.removeItem('jwt')
+      return Object.assign({}, state, {
+        jwtPayload: null
       })
     case 'CLOSE_TOAST':
       return Object.assign({}, state, {

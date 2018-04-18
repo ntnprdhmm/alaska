@@ -33,9 +33,17 @@ class Nav extends Component {
               <NavItem itemId='submit' text='Participate' />
               <NavItem itemId='leaderboard' text='LeaderBoard' />
             </ul>
-            <button onClick={this.props.toggleLoginModal} class="btn btn-outline-light" type="button">
-              Login
-            </button>
+            {
+              this.props.jwtPayload
+                ?
+                  <button onClick={this.props.logoutUI} class="btn btn-outline-danger" type="button">
+                    Logout
+                  </button>
+                :
+                  <button onClick={this.props.toggleLoginModal} class="btn btn-outline-light" type="button">
+                    Login
+                  </button>
+            }
           </div>
       </nav>
     )

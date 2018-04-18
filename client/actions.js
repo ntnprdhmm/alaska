@@ -14,7 +14,6 @@ export function closeToast (key) {
 }
 
 export function createToast (toastType, toastText) {
-  console.log(toastText)
   return {type: 'CREATE_TOAST', toastType, toastText}
 }
 
@@ -24,6 +23,17 @@ export function loginSuccess (jwt, jwtPayload) {
 
 export function registerSuccess () {
   return {type: 'REGISTER_SUCCESS'}
+}
+
+export function logout () {
+  return {type: 'LOGOUT'}
+}
+
+export const logoutUI = () => {
+  return dispatch => {
+    dispatch(logout())
+    dispatch(createToast('success', 'Bye !'))
+  }
 }
 
 export const loginBack = (jwt) => {
