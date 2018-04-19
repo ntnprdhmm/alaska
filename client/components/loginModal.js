@@ -14,7 +14,7 @@ class LoginModal extends Component {
       <div class="login-modal-wrapper">
         <div class="login-modal">
           <button class="btn btn-default btn-lg btn-icon close-icon" onClick={this.props.toggleLoginModal}>
-            <i class="fa fa-close"></i>
+            <i class="oi oi-x"></i>
           </button>
           <div class="container">
             <div class="form-wrapper">

@@ -12,6 +12,10 @@ html {
   height: 100%;
 }
 
+.green-front {
+  color: #42DCA3;
+}
+
 .main-container, #outer {
   height: 100%;
 }

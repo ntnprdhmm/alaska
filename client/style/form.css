@@ -1,8 +1,10 @@
+textarea.form-control,
 input.form-control {
   border-radius: 0;
   padding: 12px 20px;
 }
 
+textarea.form-control, textarea.form-control:focus,
 input.form-control, input.form-control:focus {
   background: #424242;
   color: #fff;
@@ -20,6 +22,7 @@ input.form-control, input.form-control:focus {
   margin-bottom: 20px;
 }
 
+textarea.form-control:focus,
 input.form-control:focus {
   border-color: inherit;
   -webkit-box-shadow: none;

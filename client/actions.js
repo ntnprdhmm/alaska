@@ -29,6 +29,18 @@ export function logout () {
   return {type: 'LOGOUT'}
 }
 
+export const submit = (value) => {
+  return dispatch => {
+    myFetch('/api/submission', 'POST', {value})
+      .then(response => {
+        response.json().then(body => {
+          dispatch(createToast(response.ok ? 'success' : 'error', body.message))
+        })
+      })
+      .catch(_ => dispatch(createToast('error', 'Fetch error')))
+  }
+}
+
 export const logoutUI = () => {
   return dispatch => {
     dispatch(logout())
@@ -47,27 +59,37 @@ export const loginBack = (jwt) => {
 export const login = (body) => {
   return dispatch => {
     myFetch('/api/auth/login', 'POST', body)
-      .then(data => data.json())
-      .then(data => dispatch(loginSuccess(data.token, jwtDecode(data.token))))
-      .then(_ => dispatch(createToast('success', 'You are now logged.')))
-      .catch(_ => dispatch(createToast('error', 'Failed to login')))
+      .then(response => {
+        response.json().then(body => {
+          if (response.ok) dispatch(loginSuccess(body.token, jwtDecode(body.token)))
+          dispatch(createToast(response.ok ? 'success' : 'error', body.message))
+        })
+      })
+      .catch(_ => dispatch(createToast('error', 'Fetch error')))
   }
 }
 
 export const register = (body) => {
   return dispatch => {
     myFetch('/api/auth/register', 'POST', body)
-      .then(_ => dispatch(registerSuccess()))
-      .then(_ => dispatch(createToast('success', 'Account created ! Check ' +
-        'your emails to verify the provided email address.')))
-      .catch(_ => dispatch(createToast('error', 'Failed to register')))
+      .then(response => {
+        response.json().then(body => {
+          if (response.ok) dispatch(registerSuccess())
+          dispatch(createToast(response.ok ? 'success' : 'error', body.message))
+        })
+      })
+      .catch(_ => dispatch(createToast('error', 'Fetch error')))
   }
 }
 
 export const sendVerificationtToken = (token) => {
   return dispatch => {
     myFetch('/api/auth/register/callback', 'POST', {token})
-      .then(_ => dispatch(createToast('success', 'Account validated ! Now, you can log in.')))
-      .catch(_ => dispatch(createToast('error', 'Email verification failed')))
+      .then(response => {
+        response.json().then(body => {
+          dispatch(createToast(response.ok ? 'success' : 'error', body.message))
+        })
+      })
+      .catch(_ => dispatch(createToast('error', 'Fetch error')))
   }
 }

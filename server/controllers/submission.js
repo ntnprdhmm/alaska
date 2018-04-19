@@ -4,7 +4,7 @@ const fileHelper = require('../helpers/file')
 const post = (req, res) => {
   // if submission empty, return error
   if (!req.body.value) {
-    return res.status(400).json()
+    return res.status(400).json({ message: 'nothing to validate' })
   }
 
   // get the current challenge answer
@@ -20,7 +20,7 @@ const post = (req, res) => {
 
   // if no file, return error
   if (!stage) {
-    return res.status(403).json()
+    return res.status(403).json({ message: 'no stage in progress' })
   }
 
   // read the content of the file
@@ -48,8 +48,8 @@ const post = (req, res) => {
         errorRate: 0
       })
     })
-    .then(sub => res.status(201).json(sub))
-    .catch(err => res.status(500).json(err))
+    .then(sub => res.status(201).json({ message: 'answer validated', sub }))
+    .catch(_ => res.status(500).json({ message: 'server error' }))
 }
 
 module.exports = { post }

@@ -5,8 +5,14 @@ const jwtHelper = require('../helpers/jwt')
 const mailHelper = require('../helpers/mail')
 
 const register = (req, res) => {
+  // check if there is an email in the request's body
+  if (!req.body.email) return res.status(400).json({
+    message: 'you must provide an email address'
+  })
   // check if there is a password in the request's body
-  if (!req.body.password) return res.status(400).json()
+  if (!req.body.password) return res.status(400).json({
+    message: 'you must provide a password'
+  })
   // generate salt
   const salt = crypto.randomBytes(128).toString('hex')
   // hash the password, using the generated salt
@@ -29,18 +35,16 @@ const register = (req, res) => {
             `email confirmation`,
             `${process.env.SERVER_ROOT}?token=${user.verificationToken}`
           )
-            .then(_ => res.json())
-            .catch(err => res.status(500).json(err))
-          // return 201, with the email where the verification email has been sent
-          return res.status(201).json()
+            .then(_ => res.json({ message: 'account create. check your emails to validate your account !' }))
+            .catch(_ => res.status(500).json({message: 'server error'}))
         })
         .catch(err => {
           return (err.name === 'SequelizeUniqueConstraintError' || err.name === 'SequelizeValidationError')
-            ? res.status(400).json(err)
-            : res.status(500).json(err)
+            ? res.status(400).json({ message: 'wrong email address' })
+            : res.status(500).json({ message: 'server error' })
         })
     })
-    .catch(err => res.status(500).json(err))
+    .catch(_ => res.status(500).json({ message: 'server error' }))
 }
 
 const callback = (req, res) => {
@@ -48,40 +52,43 @@ const callback = (req, res) => {
   models.User.findOne({where: {verificationToken: req.body.token}})
     .then(user => {
       // if he doesn't exists, return error
-      if (!user) return res.status(401).json()
+      if (!user) return res.status(401).json({ message: 'invalid validation token' })
       // We found him. Let's activate his account
       user.active = true
       user.save()
-        .then(_ => res.status(204).json())
-        .catch(err => res.status(500).json(err))
+        .then(_ => res.status(200).json({ message: 'account validated ! now, you can log in' }))
+        .catch(_ => res.status(500).json({ message: 'server error' }))
     })
-    .catch(err => res.status(500).json(err))
+    .catch(_ => res.status(500).json({ message: 'server error' }))
 }
 
 const login = (req, res) => {
+  if (!req.body.email) {
+    return res.status(400).json({ message: 'missing email address' })
+  }
   // find the user using the email in the request's body
   models.User.findOne({where: {email: req.body.email}})
     .then(user => {
-      if (!user) return res.status(404).json()
+      if (!user) return res.status(404).json({ message: 'wrong email address' })
       // hash the password in the request's body
       hashHelper.hash(req.body.password, user.salt)
         .then(hash => {
           // compare it to the hash stored in database
           if (hash !== user.password) {
-            return res.status(401).json({message: 'Wrong password'})
+            return res.status(401).json({ message: 'wrong password' })
           }
           // check if his account is activated
           if (!user.active) {
-            return res.status(401).json({message: 'You have to activate your account. Check your emails.'})
+            return res.status(401).json({ message: 'You have to activate your account. Check your emails.' })
           }
           // create JWT
           const token = jwtHelper.create({
             email: user.email
           })
-          return res.json({ token })
+          return res.json({ token, message: 'login successful !' })
         })
     })
-    .catch(err => res.status(500).json(err))
+    .catch(err => res.status(500).json({ message: 'server error' }))
 }
 
 module.exports = { register, callback, login }
