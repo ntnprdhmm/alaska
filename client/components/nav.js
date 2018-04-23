@@ -29,9 +29,11 @@ class Nav extends Component {
           <div class={`collapse navbar-collapse ${showSideNav ? 'show' : ''}`}>
             <ul class="navbar-nav mr-auto">
               <NavItem itemId='about' text='About' />
-              <NavItem itemId='dataset' text='Dataset' />
-              <NavItem itemId='submit' text='Participate' />
+              <NavItem itemId='material' text='Material' />
+              <NavItem itemId='rules' text='Rules' />
+              <NavItem itemId='submit' text='Submit an answer' />
               <NavItem itemId='leaderboard' text='LeaderBoard' />
+              <NavItem itemId='acknowledgements' text='Acknowledgements' />
             </ul>
             {
               this.props.jwtPayload

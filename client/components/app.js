@@ -5,8 +5,10 @@ import * as actions from '../actions'
 
 import Nav from './nav'
 import Header from './header'
+import Rules from './rules'
+import Acknowledgements from './acknowledgements'
 import About from './about'
-import Download from './download'
+import Material from './material'
 import Footer from './footer'
 import LeaderBoard from './leaderBoard'
 import Submit from './submit'
@@ -39,9 +41,11 @@ class App extends Component {
         <Nav />
         <Header />
         <About />
-        <Download />
+        <Material />
+        <Rules />
         <Submit />
         <LeaderBoard />
+        <Acknowledgements />
         <Footer />
         <ToastContainer />
         {this.props.showLoginModal ? <LoginModal /> : null}
