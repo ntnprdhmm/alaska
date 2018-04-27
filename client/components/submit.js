@@ -23,7 +23,7 @@ class Submit extends Component {
         <section class="content-section text-center">
           <div class="container">
             <div class="row">
-              <div class="col-lg-8 mx-auto">
+              <div class="col-lg-10 mx-auto">
                 <h2>Submit an answer</h2>
                 {
                   this.props.jwtPayload

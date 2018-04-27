@@ -296,3 +296,8 @@ img::-moz-selection {
   justify-content: center;
   align-content: center;
 }
+
+.margin-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
