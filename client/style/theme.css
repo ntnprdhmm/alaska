@@ -301,3 +301,25 @@ img::-moz-selection {
   margin-left: auto;
   margin-right: auto;
 }
+
+.custom-list {
+  list-style-type: none; /* no default bullets */
+}
+
+.custom-list-item {
+  padding-top: 15px;
+}
+
+.custom-list-item div {
+  display: inline;
+}
+
+.custom-list-item:before { /* the custom styled bullets */
+  background-color: #42DCA3;
+  content: "";
+  display: inline-block;
+  margin-right: 10px;
+  margin-bottom: 2px;
+  height: 10px;
+  width: 10px;
+}

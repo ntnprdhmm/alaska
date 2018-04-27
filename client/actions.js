@@ -1,8 +1,8 @@
 const jwtDecode = require('jwt-decode')
 import { myFetch } from './helpers/fetch'
 
-export function toggleSideNav (value) {
-  return {type: 'TOGGLE_SIDE_NAV', value}
+export function toggleSideNav () {
+  return {type: 'TOGGLE_SIDE_NAV'}
 }
 
 export function toggleLoginModal () {

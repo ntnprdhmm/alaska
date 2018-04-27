@@ -18,15 +18,14 @@ class Nav extends Component {
   componentWillUnmount () {
     removeEventListener('scroll', this.onScroll)
   }
-  render ({showSideNav}, {}) {
+  render () {
     return (
       <nav class={`navbar navbar-expand-lg navbar-light fixed-top ${this.state.black ? 'navbar-shrink' : ''}`} id="mainNav">
           <a class="navbar-brand" href="#top">ALASKA</a>
           <button class="navbar-toggler navbar-toggler-right" onClick={this.props.toggleSideNav}>
-            Menu
-            <i class="fa fa-bars"></i>
+            <i class="oi oi-menu"></i>
           </button>
-          <div class={`collapse navbar-collapse ${showSideNav ? 'show' : ''}`}>
+          <div class={`collapse navbar-collapse ${this.props.showSideNav ? 'show' : ''}`}>
             <ul class="navbar-nav mr-auto">
               <NavItem itemId='about' text='About' />
               <NavItem itemId='material' text='Material' />

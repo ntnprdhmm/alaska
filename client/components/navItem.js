@@ -7,7 +7,7 @@ import * as actions from '../actions'
 class navItem extends Component {
   closeSideNav () {
     if (this.props.showSideNav) {
-      this.props.toggleSideNav(false)
+      this.props.toggleSideNav()
     }
   }
   render({showSideNav}, {}) {
