@@ -3,6 +3,7 @@ import { connect } from 'preact-redux'
 import reducer from '../reducer'
 import * as actions from '../actions'
 import ScrollableAnchor from 'react-scrollable-anchor'
+import List from './list'
 
 @connect(reducer, actions)
 class Submit extends Component {
@@ -19,27 +20,41 @@ class Submit extends Component {
     this.setState({ value: e.target.value })
   }
   render() {
+    const list = {
+      elements: [
+        'You can send only one answer per hour.',
+        <div>
+          The answer should be the list of images names (without the file extension), sorted by
+          probability of hidden data.
+          For example, if the dataset is <b>1.jpg</b>, <b>2.jpg</b>, <b>3.jpg</b>, my answer will be
+           <b>2;3;1</b> if I think there is a highest probability of hidden data in 2 than in 3, and
+          in 3 than in 1.
+        </div>
+      ]
+    }
     return (
       <ScrollableAnchor id="submit">
         <section class="content-section text-center">
           <div class="container">
             <div class="row">
-              <div class="col-lg-10 mx-auto">
-                <h2>Submit an answer</h2>
+              <div class="col-lg-10 margin-auto">
+                <h2 class="text-center">Submit an answer</h2>
                 {
                   this.props.jwtPayload
                     ?
-                      <div class="green-front">
-                        <p>You can send only one answer by hour.</p>
-                        <form>
-                          <div class="form-group">
-                            <label for="value">Your answer</label>
-                            <textarea class="form-control" value={this.state.value} onChange={this.handleChange} rows="5" />
-                          </div>
-                          <button type="button" class="btn btn-default btn-lg" onClick={this.handleSubmit}>
-                            Submit
-                          </button>
-                        </form>
+                      <div>
+                        <div class="text-justify">
+                          <List {...list} />
+                          <form>
+                            <div class="form-group">
+                              <label for="value">Your answer</label>
+                              <textarea class="form-control" value={this.state.value} onChange={this.handleChange} rows="5" />
+                            </div>
+                          </form>
+                        </div>
+                        <button type="button" class="btn btn-default btn-lg" onClick={this.handleSubmit}>
+                          Submit
+                        </button>
                       </div>
                     :
                       <p class="green-front">

@@ -304,6 +304,7 @@ img::-moz-selection {
 
 .custom-list {
   list-style-type: none; /* no default bullets */
+  padding: 0;
 }
 
 .custom-list-item {
