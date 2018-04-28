@@ -4,7 +4,7 @@ import reducer from '../reducer'
 import * as actions from '../actions'
 import ScrollableAnchor from 'react-scrollable-anchor'
 import List from './list'
-import Answer from './answer'
+import LastSubmission from './lastSubmission'
 
 @connect(reducer, actions)
 class Submit extends Component {
@@ -56,7 +56,7 @@ class Submit extends Component {
                         <button type="button" class="btn btn-default btn-lg" onClick={this.handleSubmit}>
                           Submit
                         </button>
-                        <Answer submission={this.props.lastSubmission} />
+                        <LastSubmission submission={this.props.lastSubmission} />
                       </div>
                     :
                       <p class="green-front">
