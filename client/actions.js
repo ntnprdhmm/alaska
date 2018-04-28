@@ -18,6 +18,7 @@ export function createToast (toastType, toastText) {
 }
 
 export function loginSuccess (jwt, jwtPayload) {
+  localStorage.setItem('jwt', jwt)
   return {type: 'LOGIN_SUCCESS', jwt, jwtPayload}
 }
 
@@ -26,7 +27,12 @@ export function registerSuccess () {
 }
 
 export function logout () {
+  localStorage.removeItem('jwt')
   return {type: 'LOGOUT'}
+}
+
+export function loadLastSubmission (sub) {
+  return {type: 'LOAD_LAST_SUBMISSION', sub}
 }
 
 export const submit = (value) => {
@@ -35,6 +41,10 @@ export const submit = (value) => {
       .then(response => {
         response.json().then(body => {
           dispatch(createToast(response.ok ? 'success' : 'error', body.message))
+          if (response.ok) {
+            localStorage.setItem('lastSubmission', JSON.stringify(body.sub))
+            dispatch(loadLastSubmission(body.sub))
+          }
         })
       })
       .catch(_ => dispatch(createToast('error', 'Fetch error')))

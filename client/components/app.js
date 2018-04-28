@@ -34,6 +34,11 @@ class App extends Component {
     if (jwt) {
       this.props.loginBack(jwt)
     }
+    // get the previous submission from localStorage
+    const sub = localStorage.getItem('lastSubmission')
+    if (sub) {
+      this.props.loadLastSubmission(JSON.parse(sub))
+    }
   }
   render() {
     return (
