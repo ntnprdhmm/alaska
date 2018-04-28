@@ -25,30 +25,48 @@ const post = (req, res) => {
 
   // read the content of the file
   fileHelper.read(stage === 1 ? process.env.STAGE_1_FILE : process.env.STAGE_2_FILE)
-    .then(contentString => {
+    .then(r => {
       // each element is a boolean, that indicates if the image contains hidden things
-      const content = Array.from(contentString)
+      const content = Array.from(r)
       // array with the submission's images
       const value = req.body.value.split(';')
       // nb images with hidden things
-      const nbImagesWithData = content.filter(c => c === '1').length
+      const nbImgHiddenData = content.filter(c => c === '1').length
 
-      let undetected = nbImagesWithData
       let falseAlarm = 0
+      let probFalseAlarm = []
+      let probMiss = []
+      let minErrorRate = 100
+      let missScore = 0
+      let falseAlarmScore = 0
+      for (let i = 0; i < r.length; i++) {
+        if (r[parseInt(value[i]) - 1] === '0') {
+          falseAlarm++
+        }
+        probFalseAlarm.push(falseAlarm / (r.length - nbImgHiddenData) * 100)
+        probMiss.push(100 - (i - falseAlarm) / nbImgHiddenData * 100)
+        if (probFalseAlarm[i] < process.env.FALSE_ALARM_THRESHOLD) {
+          missScore = probFalseAlarm[i]
+        }
+        if (probFalseAlarm[i] < process.env.MISS_THRESHOLD) {
+          falseAlarmScore = probFalseAlarm[i]
+        }
+        let errorRate = (falseAlarm + nbImgHiddenData - (i - falseAlarm)) / r.length * 100
+        minErrorRate = Math.min(minErrorRate, errorRate)
+      }
 
       // create the submission in database
       return models.Submission.create({
         UserId: req.user.id,
         value: req.body.value,
         remoteAddress: req.connection.remoteAddress,
-        undetected,
-        falseAlarm,
         stage,
-        accuracy: 0,
-        errorRate: 0
+        errorRate: minErrorRate,
+        falseAlarm: falseAlarmScore,
+        miss: missScore
       })
     })
-    .then(sub => res.status(201).json({ message: 'answer validated', sub }))
+    .then(sub => res.status(201).json({ message: 'answer accepted', sub }))
     .catch(_ => res.status(500).json({ message: 'server error' }))
 }
 

@@ -21,17 +21,12 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.ENUM,
       values: [1, 2]
     },
-    undetected: {
-      type: DataTypes.INTEGER,
+    miss: {
+      type: DataTypes.DOUBLE,
       require: true,
       allowNull: false
     },
     falseAlarm: {
-      type: DataTypes.INTEGER,
-      require: true,
-      allowNull: false
-    },
-    accuracy: {
       type: DataTypes.DOUBLE,
       require: true,
       allowNull: false

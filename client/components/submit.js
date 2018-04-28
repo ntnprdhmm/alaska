@@ -10,12 +10,13 @@ class Submit extends Component {
     super()
     this.state = {value: ''}
     this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleChange = this.handleChange.bind(this)
   }
   handleSubmit() {
     this.props.submit(this.state.value)
   }
   handleChange (e) {
-    this.setState({ [e.target.name]: e.target.value })
+    this.setState({ value: e.target.value })
   }
   render() {
     return (
@@ -33,7 +34,7 @@ class Submit extends Component {
                         <form>
                           <div class="form-group">
                             <label for="value">Your answer</label>
-                            <textarea class="form-control" id="value" rows="5"></textarea>
+                            <textarea class="form-control" value={this.state.value} onChange={this.handleChange} rows="5" />
                           </div>
                           <button type="button" class="btn btn-default btn-lg" onClick={this.handleSubmit}>
                             Submit
