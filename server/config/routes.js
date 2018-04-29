@@ -14,10 +14,12 @@ module.exports = (app) => {
     .post(authController.register)
   app.route('/api/auth/register/callback')
     .post(authController.callback)
-  app.route('/api/auth/login')
-    .post(authController.login)
   app.route('/api/auth/register/email')
     .post(authController.resendConfirmationEmail)
+  app.route('/api/auth/login')
+    .post(authController.login)
+  app.route('/api/auth/reset')
+    .post(authController.reset)
 
   // submissions routes
   app.route('/api/submission')

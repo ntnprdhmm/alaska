@@ -101,6 +101,9 @@ const resendConfirmationEmail = (req, res) => {
 
   models.User.findOne({ where: {email: req.body.email} })
     .then(user => {
+      if (!user) {
+        return res.status(404).json({ message: `this account doesn't exists` })
+      }
       // already active => doesn't need to send confirmation email
       if (user.active === true) {
         return res.json({ message: 'this account has already been confirmed' })
@@ -113,4 +116,30 @@ const resendConfirmationEmail = (req, res) => {
     .catch(_ => res.status(500).json({ message: 'server error' }))
 }
 
-module.exports = { register, callback, login, resendConfirmationEmail }
+const reset = (req, res) => {
+  if (!req.body.email) {
+    return res.status(400).json({ message: 'please provide your email address' })
+  }
+
+  models.User.findOne({ where: {email: req.body.email} })
+    .then(user => {
+      if (!user) {
+        return res.status(404).json({ message: `this account doesn't exists` })
+      }
+      user.resetToken = crypto.randomBytes(128).toString('hex')
+      user.save()
+        .then(user => {
+          return mailHelper.send(
+            `Alaska <${process.env.EMAIL_SENDER}>`,
+            user.email,
+            `reset password`,
+            `${process.env.SERVER_ROOT}?reset_token=${user.resetToken}`
+          )
+        })
+        .then(_ => res.json({ message: 'reset mail sent, please check your mailbox' }))
+        .catch(err => res.status(500).json({ message: 'server error', err }))
+    })
+    .catch(err => res.status(500).json({ message: 'server error', err }))
+}
+
+module.exports = { register, callback, login, resendConfirmationEmail, reset }

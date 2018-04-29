@@ -12,6 +12,7 @@ class Login extends Component {
     this.handleLogin = this.handleLogin.bind(this)
     this.handleRegister = this.handleRegister.bind(this)
     this.handleResend = this.handleResend.bind(this)
+    this.handleReset = this.handleReset.bind(this)
   }
   handleChange (e) {
     this.setState({ [e.target.name]: e.target.value })
@@ -24,6 +25,9 @@ class Login extends Component {
   }
   handleResend () {
     this.props.resendConfirmationEmail(this.state.email)
+  }
+  handleReset () {
+    this.props.resetPassword(this.state.email)
   }
   render () {
     return (
@@ -49,6 +53,9 @@ class Login extends Component {
         <div class="login-footer-actions">
           <button type="button" class="btn btn-link" onClick={this.handleResend}>
             resend confirmation email
+          </button>
+          <button type="button" class="btn btn-link" onClick={this.handleReset}>
+            change password
           </button>
         </div>
       </form>

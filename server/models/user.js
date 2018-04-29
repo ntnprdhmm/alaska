@@ -27,6 +27,9 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING(256),
       allowNull: false
     },
+    resetToken: {
+      type: DataTypes.STRING(256)
+    },
     active: {
       type: DataTypes.BOOLEAN
     }

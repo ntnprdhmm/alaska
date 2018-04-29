@@ -6,6 +6,7 @@ const authMiddleware = (req, res, next) => {
   if (req.path === '/auth/login' ||
       req.path === '/auth/register/callback' ||
       req.path === '/auth/register/email' ||
+      req.path === '/auth/reset' ||
       req.path === '/auth/register') {
     return next()
   }

@@ -53,10 +53,19 @@ export const submit = (value) => {
 
 export const resendConfirmationEmail = (email) => {
   return dispatch => {
-    if (!email) {
-      return dispatch(createToast('error', 'Please provide your email address'))
-    }
     myFetch('/api/auth/register/email', 'POST', {email})
+      .then(response => {
+        response.json().then(body => {
+          dispatch(createToast(response.ok ? 'success' : 'error', body.message))
+        })
+      })
+      .catch(_ => dispatch(createToast('error', 'Fetch error')))
+  }
+}
+
+export const resetPassword = (email) => {
+  return dispatch => {
+    myFetch('/api/auth/reset', 'POST', {email})
       .then(response => {
         response.json().then(body => {
           dispatch(createToast(response.ok ? 'success' : 'error', body.message))
