@@ -11,7 +11,7 @@
     "build": "preact build --src client --template client/template.html",
     "start": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
     "dev": "concurrently --kill-others-on-fail \"npm run server-dev\" \"npm run client-dev\"",
-    "test": "mocha"
+    "test": "NODE_ENV=test mocha"
   },
   "repository": {
     "type": "git",

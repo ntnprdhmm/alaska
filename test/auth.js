@@ -175,4 +175,40 @@ describe('auth routes', () => {
         done()
       })
   })
+
+  describe('resend confirmation email', () => {
+
+    it('should fail because no email provided', (done) => {
+      request.post('/api/auth/register/email')
+        .send({ email: '' })
+        .expect(400)
+        .end((_, res) => {
+          expect(res.body).to.have.property('message')
+          done()
+        })
+    })
+
+    it(`should fail because this email doesn't exists`, (done) => {
+      request.post('/api/auth/register/email')
+        .send({ email: 'nobody@none.com' })
+        .expect(404)
+        .end((_, res) => {
+          expect(res.body).to.have.property('message')
+          done()
+        })
+    })
+
+    it(`should success`, (done) => {
+      request.post('/api/auth/register/email')
+        .send({ email: _data.email1 })
+        .expect(200)
+        .end((err, res) => {
+          expect(err).to.be.a('null')
+          expect(res.body).to.have.property('message')
+          done()
+        })
+    })
+
+  })
+
 })

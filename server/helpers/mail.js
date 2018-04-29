@@ -11,7 +11,10 @@ const send = (from, to, subject, text) => {
     }
   })
   const mailOptions = {from, to, subject, text}
-  return transport.sendMail(mailOptions)
+
+  return process.env.NODE_ENV === 'test'
+    ? new Promise((resolve) => resolve())
+    : transport.sendMail(mailOptions)
 }
 
 module.exports = { send }
