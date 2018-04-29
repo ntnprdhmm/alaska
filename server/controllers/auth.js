@@ -149,7 +149,7 @@ const resetCallback = (req, res) => {
   models.User.findOne({ where: {resetToken: req.body.token} })
     .then(user => {
       if (!user) {
-        return res.status(400).json({ message: 'Invalid reset token' })
+        return res.status(404).json({ message: 'Invalid reset token' })
       }
       hashHelper.hash(req.body.password, user.salt)
         .then(hashedPassword => {
