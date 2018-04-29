@@ -137,9 +137,30 @@ const reset = (req, res) => {
           )
         })
         .then(_ => res.json({ message: 'reset mail sent, please check your mailbox' }))
-        .catch(err => res.status(500).json({ message: 'server error', err }))
     })
-    .catch(err => res.status(500).json({ message: 'server error', err }))
+    .catch(_ => res.status(500).json({ message: 'server error' }))
 }
 
-module.exports = { register, callback, login, resendConfirmationEmail, reset }
+const resetCallback = (req, res) => {
+  if (!req.body.password) {
+    return res.status(400).json({ message: `You must provide a new password` })
+  }
+
+  models.User.findOne({ where: {resetToken: req.body.token} })
+    .then(user => {
+      if (!user) {
+        return res.status(400).json({ message: 'Invalid reset token' })
+      }
+      hashHelper.hash(req.body.password, user.salt)
+        .then(hashedPassword => {
+          user.password = hashedPassword
+          user.resetToken = null
+          return user.save()
+        })
+        .then(_ => res.json({ message: 'new password set successfully' }))
+        .catch(_ => res.status(500).json({ message: 'server error' }))
+    })
+    .catch(_ => res.status(500).json({ message: 'server error' }))
+}
+
+module.exports = { register, callback, login, resendConfirmationEmail, reset, resetCallback }

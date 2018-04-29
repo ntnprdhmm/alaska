@@ -4,7 +4,7 @@ import reducer from '../reducer'
 import * as actions from '../actions'
 
 @connect(reducer, actions)
-class Login extends Component {
+class LoginForm extends Component {
   constructor () {
     super()
     this.state = {email: '', password: ''}
@@ -63,4 +63,4 @@ class Login extends Component {
   }
 }
 
-export default Login
+export default LoginForm

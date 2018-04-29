@@ -42,14 +42,14 @@ p {
   }
 }
 
-.btn-link {
+a, .btn-link {
   -webkit-transition: all 0.2s ease-in-out;
   -moz-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
   color: #42DCA3;
 }
 
-.btn-link:focus, .btn-link:hover {
+a:focus, .btn-link:focus, a:hover, .btn-link:hover {
   text-decoration: none;
   color: #1d9b6c;
 }

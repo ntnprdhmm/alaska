@@ -1,9 +1,11 @@
 const initialState = {
   showSideNav: false,
   showLoginModal: false,
+  showResetModal: false,
   toasts: [],
   jwtPayload: null,
-  lastSubmission: null
+  lastSubmission: null,
+  resetToken: null
 }
 
 const reducer = (state = initialState, action) => {
@@ -15,6 +17,10 @@ const reducer = (state = initialState, action) => {
     case 'TOGGLE_LOGIN_MODAL':
       return Object.assign({}, state, {
         showLoginModal: !state.showLoginModal
+      })
+    case 'TOGGLE_RESET_MODAL':
+      return Object.assign({}, state, {
+        showResetModal: !state.showResetModal
       })
     case 'REGISTER_SUCCESS':
       return Object.assign({}, state, {
@@ -40,6 +46,11 @@ const reducer = (state = initialState, action) => {
     case 'LOAD_LAST_SUBMISSION':
       return Object.assign({}, state, {
         lastSubmission: action.sub
+      })
+    case 'HANDLE_RESET_TOKEN':
+      return Object.assign({}, state, {
+        resetToken: action.token,
+        showResetModal: true
       })
     default:
       return state

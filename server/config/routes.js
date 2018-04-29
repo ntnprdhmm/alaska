@@ -20,6 +20,8 @@ module.exports = (app) => {
     .post(authController.login)
   app.route('/api/auth/reset')
     .post(authController.reset)
+  app.route('/api/auth/reset/callback')
+    .post(authController.resetCallback)
 
   // submissions routes
   app.route('/api/submission')
