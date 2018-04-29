@@ -38,7 +38,7 @@ const register = (req, res) => {
       models.User.create(data)
         .then(user => {
           sendConfirmationEmail(user)
-            .then(_ => res.json({ message: 'account create. check your emails to validate your account !' }))
+            .then(_ => res.status(201).json({ message: 'account create. check your emails to validate your account !' }))
             .catch(_ => res.status(500).json({message: 'server error'}))
         })
         .catch(err => {

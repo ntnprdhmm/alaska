@@ -44,7 +44,7 @@ describe('submission routes', () => {
           .expect(201)
           .end((err, res) => {
             expect(err).to.be.a('null')
-            expect(res.body.stage).to.equal(1)
+            expect(res.body.sub.stage).to.equal(1)
             done()
           })
       })
@@ -92,7 +92,7 @@ describe('submission routes', () => {
           .expect(201)
           .end((err, res) => {
             expect(err).to.be.a('null')
-            expect(res.body.stage).to.equal(2)
+            expect(res.body.sub.stage).to.equal(2)
             done()
           })
       })

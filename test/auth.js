@@ -23,7 +23,7 @@ describe('auth routes', () => {
       .expect(201)
       .end((err, res) => {
         expect(err).to.be.a('null')
-        expect(res.body).to.eql('')
+        expect(res.body).to.have.property('message')
         done()
       })
   })
@@ -40,7 +40,7 @@ describe('auth routes', () => {
       .expect(201)
       .end((err, res) => {
         expect(err).to.be.a('null')
-        expect(res.body).to.eql('')
+        expect(res.body).to.have.property('message')
         done()
       })
   })
@@ -51,7 +51,7 @@ describe('auth routes', () => {
       .expect(201)
       .end((err, res) => {
         expect(err).to.be.a('null')
-        expect(res.body).to.eql('')
+        expect(res.body).to.have.property('message')
         done()
       })
   })
@@ -89,10 +89,10 @@ describe('auth routes', () => {
       .then(user => {
         request.post('/api/auth/register/callback')
           .send({ token: user.verificationToken })
-          .expect(204)
+          .expect(200)
           .end((err, res) => {
             expect(err).to.be.a('null')
-            expect(res.body).to.eql({})
+            expect(res.body).to.have.property('message')
             done()
           })
       })
@@ -103,10 +103,10 @@ describe('auth routes', () => {
       .then(user => {
         request.post('/api/auth/register/callback')
           .send({ token: user.verificationToken })
-          .expect(204)
+          .expect(200)
           .end((err, res) => {
             expect(err).to.be.a('null')
-            expect(res.body).to.eql({})
+            expect(res.body).to.have.property('message')
             done()
           })
       })
@@ -161,7 +161,7 @@ describe('auth routes', () => {
       .send({ email: _data.email1, password: `${_data.password}wrong` })
       .expect(401)
       .end((err, res) => {
-        expect(res.body.message).to.equal('Wrong password')
+        expect(res.body.message).to.equal('wrong password')
         done()
       })
   })
