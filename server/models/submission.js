@@ -21,12 +21,12 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.ENUM,
       values: [1, 2]
     },
-    miss: {
+    missRate: {
       type: DataTypes.DOUBLE,
       require: true,
       allowNull: false
     },
-    falseAlarm: {
+    falseAlarmRate: {
       type: DataTypes.DOUBLE,
       require: true,
       allowNull: false

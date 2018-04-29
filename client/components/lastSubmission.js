@@ -17,11 +17,11 @@ class LastSubmission extends Component {
             </tr>
             <tr>
               <th>False alarm rate</th>
-              <td>{this.props.submission.falseAlarm}</td>
+              <td>{this.props.submission.falseAlarmRate}</td>
             </tr>
             <tr>
               <th>Miss rate</th>
-              <td>{this.props.submission.miss}</td>
+              <td>{this.props.submission.missRate}</td>
             </tr>
             <tr>
               <th>Error rate</th>

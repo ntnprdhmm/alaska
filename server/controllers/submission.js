@@ -11,15 +11,10 @@ const post = (req, res) => {
   const currentDate = new Date().getTime() / 1000
   let stage = null
   if (currentDate > process.env.STAGE_1_START && currentDate < process.env.STAGE_1_END) {
-    challengeFile = process.env.STAGE_1_FILE
     stage = 1
   } else if (currentDate > process.env.STAGE_2_START && currentDate < process.env.STAGE_2_END) {
-    challengeFile = process.env.STAGE_2_FILE
     stage = 2
-  }
-
-  // if no file, return error
-  if (!stage) {
+  } else {
     return res.status(403).json({ message: 'no stage in progress' })
   }
 
@@ -34,27 +29,26 @@ const post = (req, res) => {
       const nbImgHiddenData = content.filter(c => c === '1').length
 
       let falseAlarm = 0
-      let probFalseAlarm = []
-      let probMiss = []
+      let falseAlarmRate = []
+      let missRate = []
       let minErrorRate = 100
-      let missScore = 0
-      let falseAlarmScore = 0
+      let finalMissRate = 0
+      let finalFalseAlarmRate = 0
       for (let i = 0; i < r.length; i++) {
         if (r[parseInt(value[i]) - 1] === '0') {
           falseAlarm++
         }
-        probFalseAlarm.push(falseAlarm / (r.length - nbImgHiddenData) * 100)
-        probMiss.push(100 - (i - falseAlarm) / nbImgHiddenData * 100)
-        if (probFalseAlarm[i] < process.env.FALSE_ALARM_THRESHOLD) {
-          missScore = probFalseAlarm[i]
+        falseAlarmRate.push(falseAlarm / (r.length - nbImgHiddenData) * 100)
+        missRate.push(100 - (i - falseAlarm) / nbImgHiddenData * 100)
+        if (falseAlarmRate[i] < process.env.FALSE_ALARM_THRESHOLD) {
+          finalMissRate = missRate[i]
         }
-        if (probFalseAlarm[i] < process.env.MISS_THRESHOLD) {
-          falseAlarmScore = probFalseAlarm[i]
+        if (missRate[i] < process.env.MISS_THRESHOLD) {
+          finalFalseAlarmRate = falseAlarmRate[i]
         }
         let errorRate = (falseAlarm + nbImgHiddenData - (i - falseAlarm)) / r.length * 100
         minErrorRate = Math.min(minErrorRate, errorRate)
       }
-
       // create the submission in database
       return models.Submission.create({
         UserId: req.user.id,
@@ -62,8 +56,8 @@ const post = (req, res) => {
         remoteAddress: req.connection.remoteAddress,
         stage,
         errorRate: minErrorRate,
-        falseAlarm: falseAlarmScore,
-        miss: missScore
+        falseAlarmRate: finalFalseAlarmRate,
+        missRate: finalMissRate
       })
     })
     .then(sub => res.status(201).json({ message: 'answer accepted', sub }))
