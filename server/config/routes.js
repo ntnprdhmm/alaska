@@ -16,6 +16,8 @@ module.exports = (app) => {
     .post(authController.callback)
   app.route('/api/auth/login')
     .post(authController.login)
+  app.route('/api/auth/register/email')
+    .post(authController.resendConfirmationEmail)
 
   // submissions routes
   app.route('/api/submission')

@@ -4,6 +4,15 @@ const hashHelper = require('../helpers/hash')
 const jwtHelper = require('../helpers/jwt')
 const mailHelper = require('../helpers/mail')
 
+const sendConfirmationEmail = (user) => {
+  return mailHelper.send(
+    `Alaska <${process.env.EMAIL_SENDER}>`,
+    user.email,
+    `email confirmation`,
+    `${process.env.SERVER_ROOT}?token=${user.verificationToken}`
+  )
+}
+
 const register = (req, res) => {
   // check if there is an email in the request's body
   if (!req.body.email) return res.status(400).json({
@@ -28,13 +37,7 @@ const register = (req, res) => {
       // create the new user
       models.User.create(data)
         .then(user => {
-          // send verification mail
-          mailHelper.send(
-            `Alaska <${process.env.EMAIL_SENDER}>`,
-            user.email,
-            `email confirmation`,
-            `${process.env.SERVER_ROOT}?token=${user.verificationToken}`
-          )
+          sendConfirmationEmail(user)
             .then(_ => res.json({ message: 'account create. check your emails to validate your account !' }))
             .catch(_ => res.status(500).json({message: 'server error'}))
         })
@@ -88,7 +91,26 @@ const login = (req, res) => {
           return res.json({ token, message: 'login successful !' })
         })
     })
-    .catch(err => res.status(500).json({ message: 'server error' }))
+    .catch(_ => res.status(500).json({ message: 'server error' }))
 }
 
-module.exports = { register, callback, login }
+const resendConfirmationEmail = (req, res) => {
+  if (!req.body.email) {
+    return res.status(400).json({ message: 'please provide your email address' })
+  }
+
+  models.User.findOne({ where: {email: req.body.email} })
+    .then(user => {
+      // already active => doesn't need to send confirmation email
+      if (user.active === true) {
+        return res.json({ message: 'this account has already been confirmed' })
+      }
+      // send the confirmation email
+      sendConfirmationEmail(user)
+        .then(_ => res.json({ message: 'a new confirmation email has been sent' }))
+        .catch(_ => res.status(500).json({ message: 'server error' }))
+    })
+    .catch(_ => res.status(500).json({ message: 'server error' }))
+}
+
+module.exports = { register, callback, login, resendConfirmationEmail }
