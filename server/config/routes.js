@@ -26,4 +26,5 @@ module.exports = (app) => {
   // submissions routes
   app.route('/api/submission')
     .post(submissionController.post)
+    .get(submissionController.get)
 }

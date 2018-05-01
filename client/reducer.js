@@ -5,7 +5,8 @@ const initialState = {
   toasts: [],
   jwtPayload: null,
   lastSubmission: null,
-  resetToken: null
+  resetToken: null,
+  submissions: []
 }
 
 const reducer = (state = initialState, action) => {
@@ -51,6 +52,10 @@ const reducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         resetToken: action.token,
         showResetModal: true
+      })
+    case 'FETCH_SUBMISSIONS_SUCCESS':
+      return Object.assign({}, state, {
+        submissions: action.submissions
       })
     default:
       return state

@@ -2,6 +2,11 @@ const models = require('../models/index')
 const submissionHelper = require('../helpers/submission')
 
 const submissionMiddleware = (req, res, next) => {
+  // exclude the following routes
+  if (req.method === 'GET') {
+    return next()
+  }
+
   // check if submissions are not blocked
   if (process.env.BLOCK_SUBMISSION.toLowerCase() === 'true') {
     return res.status(403).json({

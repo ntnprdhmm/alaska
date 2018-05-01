@@ -1,8 +1,15 @@
 import { h, Component } from 'preact'
 import ScrollableAnchor from 'react-scrollable-anchor'
+import { connect } from 'preact-redux'
+import reducer from '../reducer'
+import * as actions from '../actions'
 
+@connect(reducer, actions)
 class LeaderBoard extends Component {
-  render() {
+  componentDidMount() {
+    this.props.fetchSubmissions()
+  }
+  render({submissions}, {}) {
     return (
       <ScrollableAnchor id="leaderboard">
         <section class="content-section text-center">
@@ -19,6 +26,9 @@ class LeaderBoard extends Component {
                   </p>
                 </div>
               </div>
+              {
+                submissions.map(submission => <div>{submission.errorRate}</div>)
+              }
             </div>
           </div>
         </section>

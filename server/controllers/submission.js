@@ -1,6 +1,18 @@
 const models = require('../models/index')
 const fileHelper = require('../helpers/file')
 
+const get = (req, res) => {
+  models.Submission.findAll({
+    attributes: ['stage', 'createdAt', 'errorRate', 'missRate', 'falseAlarmRate'],
+    include: [{
+      model: models.User,
+      attributes: ['email']
+    }]
+  })
+    .then(submissions => res.json({ submissions }))
+    .catch(_ => res.status(500).json({ message: 'server error' }))
+}
+
 const post = (req, res) => {
   // if submission empty, return error
   if (!req.body.value) {
@@ -64,4 +76,4 @@ const post = (req, res) => {
     .catch(_ => res.status(500).json({ message: 'server error' }))
 }
 
-module.exports = { post }
+module.exports = { post, get }

@@ -43,6 +43,24 @@ export function handleResetToken (token) {
   return {type: 'HANDLE_RESET_TOKEN', token}
 }
 
+export function fetchSubmissionsSuccess (submissions) {
+  return {type: 'FETCH_SUBMISSIONS_SUCCESS', submissions}
+}
+
+export const fetchSubmissions = () => {
+  return dispatch => {
+    myFetch('/api/submission', 'GET')
+      .then(response => {
+        response.json().then(body => {
+          if (response.ok) {
+            dispatch(fetchSubmissionsSuccess(body.submissions))
+          }
+        })
+      })
+      .catch(_ => dispatch(createToast('error', 'Fetch error')))
+  }
+}
+
 export const sendNewPassword = (token, password) => {
   return dispatch => {
     myFetch('/api/auth/reset/callback', 'POST', {token, password})
