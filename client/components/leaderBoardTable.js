@@ -39,8 +39,8 @@ class LeaderBoardTable extends Component {
   render () {
     return (
       <div>
-        <div class="leaderboard-table table-responsive">
-          <table class="table table-hover table-dark">
+        <div class="leaderboard-table-container">
+          <table class="leaderboard-table table-hover table-dark table-striped">
             <thead>
               <tr>
                 <th>
