@@ -1,15 +1,21 @@
 import { h, Component } from 'preact'
-import ScrollableAnchor from 'react-scrollable-anchor'
 import { connect } from 'preact-redux'
 import reducer from '../reducer'
 import * as actions from '../actions'
+import ScrollableAnchor from 'react-scrollable-anchor'
+import LeaderBoardTable from './LeaderBoardTable'
+import LeaderBoardTabs from './LeaderBoardTabs'
 
 @connect(reducer, actions)
 class LeaderBoard extends Component {
   componentDidMount() {
     this.props.fetchSubmissions()
+    this.handleSwitchTab = this.handleSwitchTab.bind(this)
   }
-  render({submissions}, {}) {
+  handleSwitchTab() {
+    this.props.switchLeaderboardTab()
+  }
+  render({activeTab, submissions1, submissions2}, {}) {
     return (
       <ScrollableAnchor id="leaderboard">
         <section class="content-section text-center">
@@ -26,10 +32,9 @@ class LeaderBoard extends Component {
                   </p>
                 </div>
               </div>
-              {
-                submissions.map(submission => <div>{submission.errorRate}</div>)
-              }
             </div>
+            <LeaderBoardTabs activeTab={activeTab} onSwitch={this.handleSwitchTab} />
+            <LeaderBoardTable submissions={activeTab === 1 ? submissions1 : submissions2} />
           </div>
         </section>
       </ScrollableAnchor>

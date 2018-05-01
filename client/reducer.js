@@ -6,7 +6,9 @@ const initialState = {
   jwtPayload: null,
   lastSubmission: null,
   resetToken: null,
-  submissions: []
+  activeTab: 1,
+  submissions1: [],
+  submissions2: []
 }
 
 const reducer = (state = initialState, action) => {
@@ -55,7 +57,12 @@ const reducer = (state = initialState, action) => {
       })
     case 'FETCH_SUBMISSIONS_SUCCESS':
       return Object.assign({}, state, {
-        submissions: action.submissions
+        submissions1: action.submissions.filter(s => s.stage === 1),
+        submissions2: action.submissions.filter(s => s.stage === 2)
+      })
+    case 'SWITCH_LEADERBOARD_TAB':
+      return Object.assign({}, state, {
+        activeTab: state.activeTab === 1 ? 2 : 1
       })
     default:
       return state

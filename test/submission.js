@@ -263,4 +263,19 @@ describe('submission routes', () => {
     })
   })
 
+  describe('fetch submissions', () => {
+
+    it ('should fetch the submissions with only the needed attributes', (done) => {
+      request.get('/api/submission')
+        .expect(200)
+        .end((err, res) => {
+          expect(err).to.be.a('null')
+          expect(res.body.submissions[0]).not.to.have.all.keys(['id', 'value', 'updatedAt', 'remoteAddress', 'User'])
+          expect(res.body.submissions[0].User).to.have.property('email')
+          done()
+        })
+    })
+
+  })
+
 })

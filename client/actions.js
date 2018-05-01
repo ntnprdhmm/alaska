@@ -47,6 +47,10 @@ export function fetchSubmissionsSuccess (submissions) {
   return {type: 'FETCH_SUBMISSIONS_SUCCESS', submissions}
 }
 
+export function switchLeaderboardTab () {
+  return {type: 'SWITCH_LEADERBOARD_TAB'}
+}
+
 export const fetchSubmissions = () => {
   return dispatch => {
     myFetch('/api/submission', 'GET')
