@@ -1,6 +1,6 @@
 import { h, Component } from 'preact'
 
-import LeaderBoardTab from './LeaderBoardTab'
+import LeaderBoardTab from './leaderBoardTab'
 
 class LeaderBoardTabs extends Component {
   render () {

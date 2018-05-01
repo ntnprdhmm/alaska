@@ -3,8 +3,8 @@ import { connect } from 'preact-redux'
 import reducer from '../reducer'
 import * as actions from '../actions'
 import ScrollableAnchor from 'react-scrollable-anchor'
-import LeaderBoardTable from './LeaderBoardTable'
-import LeaderBoardTabs from './LeaderBoardTabs'
+import LeaderBoardTable from './leaderBoardTable'
+import LeaderBoardTabs from './leaderBoardTabs'
 
 @connect(reducer, actions)
 class LeaderBoard extends Component {

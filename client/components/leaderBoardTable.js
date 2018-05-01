@@ -9,16 +9,18 @@ class LeaderBoardTable extends Component {
       submissions: this.props.submissions,
       errorRate: false,
       missRate: false,
-      falseAlarmRate: false
+      falseAlarmRate: false,
+      emailFilter: ''
     }
     this.sortBy = this.sortBy.bind(this)
+    this.handleChange = this.handleChange.bind(this)
   }
   componentWillReceiveProps (nextProps) {
     this.setState({ submissions: nextProps.submissions })
   }
   sortBy (property) {
     this.setState({
-      submission: this.state.submissions.sort((a, b) => {
+      submissions: this.state.submissions.sort((a, b) => {
         return this.state[property]
           ? b[property] - a[property]
           : a[property] - b[property]
@@ -28,6 +30,12 @@ class LeaderBoardTable extends Component {
       falseAlarmRate: property === 'falseAlarmRate' ? !this.state.falseAlarmRate : false
     })
   }
+  handleChange (e) {
+    this.setState({
+      emailFilter: e.target.value,
+      submissions: this.props.submissions.filter(s => s.User.email.startsWith(e.target.value))
+    })
+  }
   render () {
     return (
       <div>
@@ -35,9 +43,12 @@ class LeaderBoardTable extends Component {
           <table class="table table-hover table-dark">
             <thead>
               <tr>
-                <th>Who</th>
+                <th>
+                  <input type="text" class="form-control" value={this.state.emailFilter}
+                    onInput={this.handleChange} />
+                </th>
                 <LeaderBoardTableHeader text={'Error Rate'}
-                  onClick={_ => this.sortBy('errorRate')}/>
+                  onClick={_ => this.sortBy('errorRate')} />
                 <LeaderBoardTableHeader text={'Miss Rate'}
                   onClick={_ => this.sortBy('missRate')} />
                 <LeaderBoardTableHeader text={'False Alarm Rate'}
@@ -46,7 +57,7 @@ class LeaderBoardTable extends Component {
             </thead>
             <tbody>
               {
-                this.props.submissions.map(submission => {
+                this.state.submissions.map(submission => {
                   return (
                     <tr>
                       <td>{submission.User.email}</td>
