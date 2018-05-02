@@ -5,7 +5,7 @@ class About extends Component {
   render() {
     return (
       <ScrollableAnchor id="about">
-        <section class="content-section">
+        <section class="content-section content-section--no-padding-bottom">
           <div class="container">
             <div class="row">
               <div class="col-lg-10 margin-auto">

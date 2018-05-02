@@ -28,6 +28,7 @@ class Nav extends Component {
           <div class={`collapse navbar-collapse ${this.props.showSideNav ? 'show' : ''}`}>
             <ul class="navbar-nav mr-auto">
               <NavItem itemId='about' text='About' />
+              <NavItem itemId='timeline' text='Timeline' />
               <NavItem itemId='material' text='Material' />
               <NavItem itemId='rules' text='Rules' />
               <NavItem itemId='submit' text='Submit an answer' />
