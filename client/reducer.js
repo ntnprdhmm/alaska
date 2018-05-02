@@ -8,7 +8,8 @@ const initialState = {
   resetToken: null,
   activeTab: 1,
   submissions1: [],
-  submissions2: []
+  submissions2: [],
+  stages: []
 }
 
 const reducer = (state = initialState, action) => {
@@ -63,6 +64,10 @@ const reducer = (state = initialState, action) => {
     case 'SWITCH_LEADERBOARD_TAB':
       return Object.assign({}, state, {
         activeTab: state.activeTab === 1 ? 2 : 1
+      })
+    case 'FETCH_STAGES_SUCCESS':
+      return Object.assign({}, state, {
+        stages: action.stages
       })
     default:
       return state

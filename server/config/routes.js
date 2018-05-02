@@ -3,6 +3,7 @@ const submissionMiddleware = require('../middlewares/submission')
 
 const authController = require('../controllers/auth')
 const submissionController = require('../controllers/submission')
+const stageController = require('../controllers/stage')
 
 module.exports = (app) => {
   // apply middlewares
@@ -27,4 +28,8 @@ module.exports = (app) => {
   app.route('/api/submission')
     .post(submissionController.post)
     .get(submissionController.get)
+
+  // stages routes
+  app.route('/api/stage')
+    .get(stageController.get)
 }

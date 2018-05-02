@@ -51,6 +51,10 @@ export function switchLeaderboardTab () {
   return {type: 'SWITCH_LEADERBOARD_TAB'}
 }
 
+export function fetchStagesSuccess (stages) {
+  return {type: 'FETCH_STAGES_SUCCESS', stages}
+}
+
 export const fetchSubmissions = () => {
   return dispatch => {
     myFetch('/api/submission', 'GET')
@@ -132,6 +136,18 @@ export const loginBack = (jwt) => {
   return dispatch => {
     dispatch(loginSuccess(jwt, payload))
     dispatch(createToast('success', `Welcome back ! Your logged as ${payload.email} `))
+  }
+}
+
+export const fetchStages = () => {
+  return dispatch => {
+    myFetch('/api/stage', 'GET')
+      .then(response => {
+        response.json().then(body => {
+          if (response.ok) dispatch(fetchStagesSuccess(body.stages))
+        })
+      })
+      .catch(_ => dispatch(createToast('error', 'Fetch error')))
   }
 }
 

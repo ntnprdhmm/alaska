@@ -24,7 +24,7 @@ class Acknowledgements extends Component {
 
     const list2 = {
       text: `We would like to thank all the individuals that help us organizing this contest. Those are mainly (but
-        not exclusively) :`,
+        not exclusively):`,
       elements: [
         <div>
           <a href='https://www.linkedin.com/in/antoine-prudhomme/'>Antoine Prudhomme</a>,

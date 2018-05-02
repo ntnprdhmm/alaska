@@ -33,7 +33,7 @@ class Rules extends Component {
             draw ROC curves.
           </div>,
           <div>
-            An exemple of valid submission file is provided <a href=''>here</a>.
+            An exemple of valid submission file is provided in the <b>submit an answer</b> section.
           </div>
       ]
     }

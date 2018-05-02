@@ -14,7 +14,7 @@ class Material extends Component {
 
         <div>We provide a set of scripts that have been used to convert the raw images into jpeg format. This
         python script uses library such as <a href="http://www.numpy.org/">numpy</a> (version xx),
-        <a href="https://pillow.readthedocs.io/en/5.1.x/">pillow</a> (version xx), ... and the open
+        &nbsp;<a href="https://pillow.readthedocs.io/en/5.1.x/">pillow</a> (version xx), ... and the open
         source software image manipulation software <a href="http://rawtherapee.com/">Rawtherapee</a>
         (version 5.4).
         Those scripts are those that we have used to generate the images from the testing dataset.</div>,

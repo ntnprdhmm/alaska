@@ -28,9 +28,10 @@ class Submit extends Component {
           The answer should be the list of images names (without the file extension), sorted by
           probability of hidden data.
           For example, if the dataset is <b>1.jpg</b>, <b>2.jpg</b>, <b>3.jpg</b>, my answer will be
-           <b>2;3;1</b> if I think there is a highest probability of hidden data in 2 than in 3, and
+          &nbsp;<b>2;3;1</b> if I think there is a highest probability of hidden data in 2 than in 3, and
           in 3 than in 1.
-        </div>
+        </div>,
+        `Your answer will be submited for the current stage. Make sure you work on the right dataset.`
       ]
     }
     return (

@@ -15,11 +15,13 @@ import Submit from './submit'
 import LoginModal from './loginModal'
 import ResetModal from './resetModal'
 import ToastContainer from './toastContainer'
+import Timeline from './timeline'
 
 import '../style/theme.css'
 import '../style/form.css'
 import '../style/toast.css'
 import '../style/modal.css'
+import '../style/timeline.css'
 
 @connect(reduce, actions)
 class App extends Component {
@@ -53,6 +55,7 @@ class App extends Component {
         <Nav />
         <Header />
         <About />
+        <Timeline />
         <Material />
         <Rules />
         <Submit />
