@@ -5,6 +5,7 @@ const app = express()
 const bodyParser = require('body-parser')
 
 app.use(express.static('build'))
+app.use(express.static('server/public'))
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
