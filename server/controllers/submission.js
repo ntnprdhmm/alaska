@@ -34,32 +34,53 @@ const post = (req, res) => {
   fileHelper.read(stage === 1 ? process.env.STAGE_1_FILE : process.env.STAGE_2_FILE)
     .then(r => {
       // each element is a boolean, that indicates if the image contains hidden things
-      const content = Array.from(r)
+      const correctAns = Array.from(r)
       // array with the submission's images
-      const value = req.body.value.split(';')
+      const ans = req.body.value.split(';')
       // nb images with hidden things
-      const nbImgHiddenData = content.filter(c => c === '1').length
+      const nbStego = correctAns.filter(c => c === '1').length
+      const nbCover = correctAns.length - nbStego
 
-      let falseAlarm = 0
-      let falseAlarmRate = []
-      let missRate = []
-      let minErrorRate = 100
-      let finalMissRate = 0
-      let finalFalseAlarmRate = 0
-      for (let i = 0; i < r.length; i++) {
-        if (r[parseInt(value[i]) - 1] === '0') {
-          falseAlarm++
+      let nbMD = nbStego + 0.0
+      let nbFA = 0.0
+
+      const datasetSize = nbStego + nbCover
+
+      let pCD001 = 0.0 // Proba de Correct Detection pour un taux de Fausse alarme de 0.01
+      let FPat50 = 0.0 // Proba de Faux Positif pour 50% de bonne detection
+      let minPE = 1.0  // Valeur minimale proba FA + proba MD
+      let TOP10FA = 0.0
+
+      let ROC_pwr = [0.0]
+      let ROC_pfa = [0.0]
+
+      // On commence par supposer qu'ils sont tous cover (donc pFA=0 & pMD=0)
+      for (let i = 0; i < datasetSize; i++) {
+
+        if (correctAns[ans[i]] === '0') {
+          nbFA++
         }
-        falseAlarmRate.push(falseAlarm / (r.length - nbImgHiddenData) * 100)
-        missRate.push(100 - (i - falseAlarm) / nbImgHiddenData * 100)
-        if (falseAlarmRate[i] < process.env.FALSE_ALARM_THRESHOLD) {
-          finalMissRate = missRate[i]
+        if (correctAns[ans[i]] === '1') {
+          nbMD--
         }
-        if (missRate[i] < process.env.MISS_THRESHOLD) {
-          finalFalseAlarmRate = falseAlarmRate[i]
+        let pFA = nbFA / nbCover
+        let pMD = nbMD / nbStego
+        let PE = (nbFA + nbMD) / (nbStego + nbCover)
+        if (pFA <= 0.05) { // ici j'ai mis 5% car j'ai généré un petit jeu de données
+          pCD001 = 1 - pMD
         }
-        let errorRate = (falseAlarm + nbImgHiddenData - (i - falseAlarm)) / r.length * 100
-        minErrorRate = Math.min(minErrorRate, errorRate)
+        if (pMD >= 0.5) { // ici j'ai mis 5% car j'ai généré un petit jeu de données
+          FPat50 = pFA
+        }
+        if (PE < minPE) {
+          minPE = PE
+        }
+        if (i <= datasetSize * 0.1) {
+          TOP10FA = pFA
+        }
+
+        ROC_pwr.push(1 - pMD)
+        ROC_pfa.push(pFA)
       }
       // create the submission in database
       return models.Submission.create({
@@ -67,9 +88,9 @@ const post = (req, res) => {
         value: req.body.value,
         remoteAddress: req.connection.remoteAddress,
         stage,
-        errorRate: minErrorRate,
-        falseAlarmRate: finalFalseAlarmRate,
-        missRate: finalMissRate
+        errorRate: minPE,
+        falseAlarmRate: FPat50,
+        missRate: pCD001
       })
     })
     .then(sub => res.status(201).json({ message: 'answer accepted', sub }))
