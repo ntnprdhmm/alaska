@@ -86,6 +86,18 @@ BLOCK_SUBMISSION=
 
 Create **STAGE_1_FILE** and **STAGE_2_FILE**, and put your answers as binary strings in it.
 
+#### Database
+
+First, create the tables in the database by running
+```
+./node_modules/.bin/sequelize db:migrate
+```
+
+Then, you can fill it with tests data (only if you want it)
+```
+./node_modules/.bin/sequelize db:seed:all
+```
+
 ### Build and run
 
 You can find all the scripts in **package.json**.
