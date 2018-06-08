@@ -12,9 +12,9 @@ class Header extends Component {
                 <div class="col-lg-8 mx-auto">
                   <h1 class="brand-heading">Alaska</h1>
                   <p class="intro-text">
-                    A free, responsive, one page Bootstrap theme.
+                  A challenge of steganalysis into the wilderness
                     <br />
-                    Created by Start Bootstrap.
+                    of the real world
                   </p>
                   <a href="#about" class="btn btn-circle js-scroll-trigger">
                     <span class="oi oi-chevron-bottom" title="chevron-bottom"></span>

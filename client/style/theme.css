@@ -401,3 +401,7 @@ img::-moz-selection {
 .leaderboard-table td, .leaderboard-table th {
   padding: .75rem;
 }
+
+.disclaimers {
+  line-height: 66px;
+}

@@ -1,12 +1,16 @@
 import { h, Component } from 'preact'
 
+import logo from '../images/utt_logo.png'
+
 class Footer extends Component {
   render() {
     return (
-      <footer>
+      <footer class="text-center">
         <div class="container">
-          <span>Copyright &copy; Your Website 2018</span>
-          <span class="float-right">
+          <a target="_blank" href="http://www.utt.fr/en/index.html">
+            <img src={logo} class="img-fluid" alt="utt logo" />
+          </a>
+          <span class="float-right disclaimers">
             <a target="_blank" href="disclaimers.html">disclaimers</a>
           </span>
         </div>

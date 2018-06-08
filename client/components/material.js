@@ -5,7 +5,7 @@ import List from './list'
 class Material extends Component {
   render () {
     const list = {
-      text: 'The material are mostly of three kind.',
+      text: 'The material are mostly of three kinds.',
       elements: [
         <div>First, and perhaps most important ones, we provide two datasets. The training dataset consists of a
         set of 50,000 raw images. The testing dataset consists of a subset of 5,000 (color) images
