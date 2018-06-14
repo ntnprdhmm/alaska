@@ -18,7 +18,6 @@ describe('auth middleware', () => {
   it('should pass the auth middleware', (done) => {
     request.post('/api/submission')
       .set('authorization', `Bearer ${jwt}`)
-      .send({ value: 'yolo' })
-      .expect(201, done)
+      .expect(400, done)
   })
 })

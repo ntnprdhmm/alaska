@@ -88,7 +88,7 @@ describe('submission routes', () => {
       it('should submit for stage 2', (done) => {
         request.post('/api/submission')
           .set('authorization', `Bearer ${jwt}`)
-          .send({ value: '1;2;3;4;5;6;7;8;9;10;11;12;13;14;15;16;17;18;19;20' })
+          .send({ value: '1;2;3;4;5;6;7;8;9;10' })
           .expect(201)
           .end((err, res) => {
             expect(err).to.be.a('null')
@@ -210,7 +210,7 @@ describe('submission routes', () => {
     it('should work with an active account', (done) => {
       request.post('/api/submission')
         .set('authorization', `Bearer ${jwt}`)
-        .send({ value: '1;2;3;4;5;6;7;8;9;10;11;12;13;14;15;16;17;18;19;20' })
+        .send({ value: '1;2;3;4;5;6;7;8;9;10' })
         .expect(201, done)
     })
 
@@ -228,7 +228,7 @@ describe('submission routes', () => {
     it(`shouldn't work with an other active account on the same @IP`, (done) => {
       request.post('/api/submission')
         .set('authorization', `Bearer ${jwt3}`)
-        .send({ value: '1;2;3;4;5;6;7;8;9;10;11;12;13;14;15;16;17;18;19;20' })
+        .send({ value: '1;2;3;4;5;6;7;8;9;10' })
         .expect(403)
         .end((_, res) => {
           expect(res.body.cause).to.be.equal('remote')
@@ -250,7 +250,7 @@ describe('submission routes', () => {
     it ('should block the submission', (done) => {
       request.post('/api/submission')
         .set('authorization', `Bearer ${jwt3}`)
-        .send({ value: '1;2;3;4;5;6;7;8;9;10;11;12;13;14;15;16;17;18;19;20' })
+        .send({ value: '1;2;3;4;5;6;7;8;9;10' })
         .expect(403)
         .end((_, res) => {
           expect(res.body.cause).to.be.equal('blocked')

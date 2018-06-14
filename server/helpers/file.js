@@ -8,7 +8,11 @@ const path = require('path')
  */
 const read = (filepath) => {
   return new Promise((resolve, reject) => {
-    const fullPath = path.join(__dirname, '..', filepath)
+  	// if env is test, look in the test directory instead of server directory
+	const fullPath = process.env.NODE_ENV === 'test'
+		? path.join(__dirname, '../..', 'test', filepath)
+		: path.join(__dirname, '..', filepath) 
+
     fs.readFile(fullPath, 'utf-8', (err, data) => {
       err
         ? reject(err)
