@@ -37,14 +37,20 @@ const post = (req, res) => {
       const correctAns = Array.from(r)
       // array with the submission's images
       const ans = req.body.value.split(';')
+
+      const mask = Array.from({length: correctAns.length}, () => Math.random() > 0.8 ? 0 : 1)
+
       // nb images with hidden things
-      const nbStego = correctAns.filter(c => c === '1').length
-      const nbCover = correctAns.length - nbStego
+      const nbStego = correctAns.filter((c, i) => mask[i] === 1 && c === '1').length
+      const nbCover = mask.filter(v => v === 1).length - nbStego
+
+      const datasetSize = nbStego + nbCover
+
+      console.log(correctAns.length)
+      console.log(datasetSize)
 
       let nbMD = nbStego + 0.0
       let nbFA = 0.0
-
-      const datasetSize = nbStego + nbCover
 
       let pCD001 = 0.0 // Proba de Correct Detection pour un taux de Fausse alarme de 0.01
       let FPat50 = 0.0 // Proba de Faux Positif pour 50% de bonne detection
@@ -55,32 +61,33 @@ const post = (req, res) => {
       let ROC_pfa = [0.0]
 
       // On commence par supposer qu'ils sont tous cover (donc pFA=0 & pMD=0)
-      for (let i = 0; i < datasetSize; i++) {
+      for (let i = 0; i < correctAns.length; i++) {
+        if (mask[i] === 1) {
+          if (correctAns[ans[i]] === '0') {
+            nbFA++
+          }
+          if (correctAns[ans[i]] === '1') {
+            nbMD--
+          }
+          let pFA = nbFA / nbCover
+          let pMD = nbMD / nbStego
+          let PE = (nbFA + nbMD) / (nbStego + nbCover)
+          if (pFA <= 0.05) { // ici j'ai mis 5% car j'ai généré un petit jeu de données
+            pCD001 = 1 - pMD
+          }
+          if (pMD >= 0.5) { // ici j'ai mis 5% car j'ai généré un petit jeu de données
+            FPat50 = pFA
+          }
+          if (PE < minPE) {
+            minPE = PE
+          }
+          if (i <= datasetSize * 0.1) {
+            TOP10FA = pFA
+          }
 
-        if (correctAns[ans[i]] === '0') {
-          nbFA++
+          ROC_pwr.push(1 - pMD)
+          ROC_pfa.push(pFA)
         }
-        if (correctAns[ans[i]] === '1') {
-          nbMD--
-        }
-        let pFA = nbFA / nbCover
-        let pMD = nbMD / nbStego
-        let PE = (nbFA + nbMD) / (nbStego + nbCover)
-        if (pFA <= 0.05) { // ici j'ai mis 5% car j'ai généré un petit jeu de données
-          pCD001 = 1 - pMD
-        }
-        if (pMD >= 0.5) { // ici j'ai mis 5% car j'ai généré un petit jeu de données
-          FPat50 = pFA
-        }
-        if (PE < minPE) {
-          minPE = PE
-        }
-        if (i <= datasetSize * 0.1) {
-          TOP10FA = pFA
-        }
-
-        ROC_pwr.push(1 - pMD)
-        ROC_pfa.push(pFA)
       }
       // create the submission in database
       return models.Submission.create({
