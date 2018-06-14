@@ -46,7 +46,7 @@ const post = async (req, res) => {
     }
     if (ans.length > correctAns.length) {
       return res.status(400).json({ 
-        message: 'There are too many images in your answer' 
+        message: 'There are more images than expected in your answer' 
       })
     }
 

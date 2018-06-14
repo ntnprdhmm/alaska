@@ -85,6 +85,39 @@ describe('submission routes', () => {
         })
       })
 
+      it(`should throw an error if there are less images than expected`, (done) => {
+        request.post('/api/submission')
+          .set('authorization', `Bearer ${jwt}`)
+          .send({ value: '1;2;3;4;5;6;7;8;9' })
+          .expect(400)
+          .end((err, res) => {
+            expect(res.body.message).to.equal('There are missing images in your answer')
+            done()
+          })
+      })
+
+      it(`should throw an error if there are more images than expected`, (done) => {
+        request.post('/api/submission')
+          .set('authorization', `Bearer ${jwt}`)
+          .send({ value: '1;2;3;4;5;6;7;8;9;11;10' })
+          .expect(400)
+          .end((err, res) => {
+            expect(res.body.message).to.equal('There are more images than expected in your answer')
+            done()
+          })
+      })
+
+      it(`should throw an error if there are duplicates images in the answer`, (done) => {
+        request.post('/api/submission')
+          .set('authorization', `Bearer ${jwt}`)
+          .send({ value: '1;2;3;4;5;7;7;8;9;10' })
+          .expect(400)
+          .end((err, res) => {
+            expect(res.body.message).to.equal('There are duplicates images in your answer')
+            done()
+          })
+      })
+
       it('should submit for stage 2', (done) => {
         request.post('/api/submission')
           .set('authorization', `Bearer ${jwt}`)
