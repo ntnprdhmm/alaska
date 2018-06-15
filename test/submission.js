@@ -40,7 +40,7 @@ describe('submission routes', () => {
       it('should submit for stage 1', (done) => {
         request.post('/api/submission')
           .set('authorization', `Bearer ${jwt}`)
-          .send({ value: '1;2;3;4;5;6' })
+          .send({ value: '0;1;2;3;4;5' })
           .expect(201)
           .end((err, res) => {
             expect(err).to.be.a('null')
@@ -88,7 +88,7 @@ describe('submission routes', () => {
       it(`should throw an error if there are less images than expected`, (done) => {
         request.post('/api/submission')
           .set('authorization', `Bearer ${jwt}`)
-          .send({ value: '1;2;3;4;5;6;7;8;9' })
+          .send({ value: '0;1;2;3;4;5;6;7;8' })
           .expect(400)
           .end((err, res) => {
             expect(res.body.message).to.equal('There are missing images in your answer')
@@ -99,7 +99,7 @@ describe('submission routes', () => {
       it(`should throw an error if there are more images than expected`, (done) => {
         request.post('/api/submission')
           .set('authorization', `Bearer ${jwt}`)
-          .send({ value: '1;2;3;4;5;6;7;8;9;11;10' })
+          .send({ value: '0;1;2;3;4;5;6;7;8;9;10' })
           .expect(400)
           .end((err, res) => {
             expect(res.body.message).to.equal('There are more images than expected in your answer')
@@ -110,7 +110,7 @@ describe('submission routes', () => {
       it(`should throw an error if there are duplicates images in the answer`, (done) => {
         request.post('/api/submission')
           .set('authorization', `Bearer ${jwt}`)
-          .send({ value: '1;2;3;4;5;7;7;8;9;10' })
+          .send({ value: '0;1;2;3;4;5;7;7;8;9' })
           .expect(400)
           .end((err, res) => {
             expect(res.body.message).to.equal('There are duplicates images in your answer')
@@ -118,10 +118,43 @@ describe('submission routes', () => {
           })
       })
 
+      it(`should throw an error because one element is no numerical`, (done) => {
+        request.post('/api/submission')
+          .set('authorization', `Bearer ${jwt}`)
+          .send({ value: '0;1;2;3;4;5;6;yolo;8;9' })
+          .expect(400)
+          .end((err, res) => {
+            expect(res.body.message).to.equal('Image indexes can take only numerical values')
+            done()
+          })
+      })
+
+      it(`should throw an error because one index is bigger than the number of images`, (done) => {
+        request.post('/api/submission')
+          .set('authorization', `Bearer ${jwt}`)
+          .send({ value: '1;2;3;4;5;6;50;8;9;0' })
+          .expect(400)
+          .end((err, res) => {
+            expect(res.body.message).to.equal('Image indexes cannot be larger than total number of images')
+            done()
+          })
+      })
+
+      it(`should throw an error because one index is lower than 1`, (done) => {
+        request.post('/api/submission')
+          .set('authorization', `Bearer ${jwt}`)
+          .send({ value: '1;-2;3;4;5;6;7;8;9;0' })
+          .expect(400)
+          .end((err, res) => {
+            expect(res.body.message).to.equal('How did you come out with negative image indexes ?!?')
+            done()
+          })
+      })
+
       it('should submit for stage 2', (done) => {
         request.post('/api/submission')
           .set('authorization', `Bearer ${jwt}`)
-          .send({ value: '1;2;3;4;5;6;7;8;9;10' })
+          .send({ value: '1;2;3;4;5;6;7;8;9;0' })
           .expect(201)
           .end((err, res) => {
             expect(err).to.be.a('null')
@@ -169,7 +202,7 @@ describe('submission routes', () => {
       it(`shouldn't submit before stage 1 `, (done) => {
         request.post('/api/submission')
           .set('authorization', `Bearer ${jwt}`)
-          .send({ value: '1;2;3;4;5;6' })
+          .send({ value: '1;2;3;4;5;0' })
           .expect(403, done)
       })
 
@@ -198,7 +231,7 @@ describe('submission routes', () => {
       it(`shouldn't submit after stage 1 and before stage 2`, (done) => {
         request.post('/api/submission')
           .set('authorization', `Bearer ${jwt}`)
-          .send({ value: '1;2;3;4;5;6' })
+          .send({ value: '1;2;3;4;5;0' })
           .expect(403, done)
       })
 
@@ -227,7 +260,7 @@ describe('submission routes', () => {
       it(`shouldn't submit after stage 2`, (done) => {
         request.post('/api/submission')
           .set('authorization', `Bearer ${jwt}`)
-          .send({ value: '1;2;3;4;5;6' })
+          .send({ value: '1;2;3;4;5;0' })
           .expect(403, done)
       })
 
@@ -243,7 +276,7 @@ describe('submission routes', () => {
     it('should work with an active account', (done) => {
       request.post('/api/submission')
         .set('authorization', `Bearer ${jwt}`)
-        .send({ value: '1;2;3;4;5;6;7;8;9;10' })
+        .send({ value: '1;2;3;4;5;6;7;8;9;0' })
         .expect(201, done)
     })
 
@@ -261,7 +294,7 @@ describe('submission routes', () => {
     it(`shouldn't work with an other active account on the same @IP`, (done) => {
       request.post('/api/submission')
         .set('authorization', `Bearer ${jwt3}`)
-        .send({ value: '1;2;3;4;5;6;7;8;9;10' })
+        .send({ value: '1;2;3;4;5;6;7;8;9;0' })
         .expect(403)
         .end((_, res) => {
           expect(res.body.cause).to.be.equal('remote')
@@ -283,7 +316,7 @@ describe('submission routes', () => {
     it ('should block the submission', (done) => {
       request.post('/api/submission')
         .set('authorization', `Bearer ${jwt3}`)
-        .send({ value: '1;2;3;4;5;6;7;8;9;10' })
+        .send({ value: '1;2;3;4;5;6;7;8;9;0' })
         .expect(403)
         .end((_, res) => {
           expect(res.body.cause).to.be.equal('blocked')

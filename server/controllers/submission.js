@@ -49,11 +49,28 @@ const post = async (req, res) => {
         message: 'There are more images than expected in your answer' 
       })
     }
-
     // check that each images in the answer is different
     if (ans.length !== new Set(ans).size) {
       return res.status(400).json({ 
         message: 'There are duplicates images in your answer' 
+      })
+    }
+    // check that all elements of the answer are numerical values (indexes)
+    if (ans.some(isNaN)) {
+      return res.status(400).json({ 
+        message: 'Image indexes can take only numerical values' 
+      })
+    }
+    // check that images indexes are from 0 to correctAns.length-1 
+    if (Math.max(...ans) >= correctAns.length) {
+      return res.status(400).json({ 
+        message: 'Image indexes cannot be larger than total number of images' 
+      })
+    }
+    console.log(Math.min(...ans))
+    if (Math.min(...ans) < 0) {
+      return res.status(400).json({ 
+        message: 'How did you come out with negative image indexes ?!?' 
       })
     }
 
