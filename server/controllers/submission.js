@@ -67,7 +67,6 @@ const post = async (req, res) => {
         message: 'Image indexes cannot be larger than total number of images' 
       })
     }
-    console.log(Math.min(...ans))
     if (Math.min(...ans) < 0) {
       return res.status(400).json({ 
         message: 'How did you come out with negative image indexes ?!?' 
@@ -81,6 +80,7 @@ const post = async (req, res) => {
     const nbCover = mask.filter(v => v === 1).length - nbStego
 
     const datasetSize = nbStego + nbCover
+    let datasetIndex = 0
 
     let nbMD = nbStego + 0.0
     let nbFA = 0.0
@@ -114,12 +114,14 @@ const post = async (req, res) => {
         if (PE < minPE) {
           minPE = PE
         }
-        if (i <= datasetSize * 0.1) {
+        if (datasetIndex <= datasetSize * 0.1) {
           TOP10FA = pFA
         }
 
         ROC_pwr.push(1 - pMD)
         ROC_pfa.push(pFA)
+
+        datasetIndex++
       }
     }
     // create the submission in database
