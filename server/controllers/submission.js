@@ -35,6 +35,7 @@ const post = async (req, res) => {
     const r = await fileHelper.read(stage === 1 ? process.env.STAGE_1_FILE : process.env.STAGE_2_FILE) 
     // each element is a boolean, that indicates if the image contains hidden things
     const correctAns = Array.from(r)
+
     // array with the submission's images
     const ans = req.body.value.split(';')
 
@@ -73,15 +74,25 @@ const post = async (req, res) => {
       })
     }
 
-    const mask = Array.from({length: correctAns.length}, () => Math.random() > 0.8 ? 0 : 1)
+    //const mask = Array.from({length: correctAns.length}, () => Math.random() > 0.8 ? 0 : 1)
+    const mask = [1,1,1,1,1,1,1,1,1,0,0,0]
 
-    // nb images with hidden things
-    const nbStego = correctAns.filter((c, i) => mask[i] === 1 && c === '1').length
-    const nbCover = mask.filter(v => v === 1).length - nbStego
+    let nbStego = 0.0
+    let nbCover = 0.0
+    for (let i = 0; i < correctAns.length; i++) {
+      if (mask[i] === 1) {
+        if (correctAns[ans[i]] === '0') {
+          nbCover++
+        }
+        if ( correctAns[ans[i]] === '1') {
+          nbStego++
+        }
+      }
+    }
 
     const datasetSize = nbStego + nbCover
     let datasetIndex = 0
-
+    
     let nbMD = nbStego + 0.0
     let nbFA = 0.0
 
@@ -124,15 +135,16 @@ const post = async (req, res) => {
         datasetIndex++
       }
     }
+    
     // create the submission in database
     const sub = await models.Submission.create({
       UserId: req.user.id,
       value: req.body.value,
       remoteAddress: req.connection.remoteAddress,
       stage,
-      errorRate: minPE,
-      falseAlarmRate: FPat50,
-      missRate: pCD001
+      errorRate: Math.round(minPE*10000)/100,
+      falseAlarmRate: Math.round(FPat50*10000)/100,
+      missRate: Math.round((1-pCD001)*10000)/100
     })
     return res.status(201).json({ message: 'answer accepted', sub })
   } catch (err) {
