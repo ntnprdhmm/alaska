@@ -7,6 +7,10 @@ const get = (req, res) => {
     {
       start: process.env.STAGE_2_START,
       end: process.env.STAGE_2_END
+    },
+    {
+      start: process.env.STAGE_3_START,
+      end: process.env.STAGE_3_END
     }
   ]})
 }

@@ -27,7 +27,8 @@ class LeaderBoardTable extends Component {
       }),
       errorRate: property === 'errorRate' ? !this.state.errorRate : false,
       missRate: property === 'missRate' ? !this.state.missRate : false,
-      falseAlarmRate: property === 'falseAlarmRate' ? !this.state.falseAlarmRate : false
+      falseAlarmRate: property === 'falseAlarmRate' ? !this.state.falseAlarmRate : false,
+      FAtop10 : property === 'FAtop10' ? !this.state.FAtop10 : false
     })
   }
   handleChange (e) {
@@ -51,6 +52,8 @@ class LeaderBoardTable extends Component {
                   onClick={_ => this.sortBy('errorRate')} />
                 <LeaderBoardTableHeader text={'Missed Detection at 5% False Alarm Rate'}
                   onClick={_ => this.sortBy('missRate')} />
+                <LeaderBoardTableHeader text={'False Alarm probability among 10% firsts'}
+                  onClick={_ => this.sortBy('FAtop10')} />
                 <LeaderBoardTableHeader text={'FP50 (False Positive rate at 50% Missed Detection)'}
                   onClick={_ => this.sortBy('falseAlarmRate')} />
               </tr>
@@ -63,6 +66,7 @@ class LeaderBoardTable extends Component {
                       <td>{submission.User.email}</td>
                       <td>{submission.errorRate}</td>
                       <td>{submission.missRate}</td>
+                      <td>{submission.FAtop10}</td>
                       <td>{submission.falseAlarmRate}</td>
                     </tr>
                   )

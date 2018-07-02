@@ -16,16 +16,16 @@ class LastSubmission extends Component {
               <td>{d.toLocaleString()}</td>
             </tr>
             <tr>
-              <th>False alarm rate</th>
-              <td>{this.props.submission.falseAlarmRate}</td>
+              <th>minPE (Minimal Error Rate) </th>
+              <td>{this.props.submission.errorRate}</td>
             </tr>
             <tr>
-              <th>Miss rate</th>
+              <th>Missed Detection at 5% False Alarm Rate</th>
               <td>{this.props.submission.missRate}</td>
             </tr>
             <tr>
-              <th>Error rate</th>
-              <td>{this.props.submission.errorRate}</td>
+              <th>FP50 (False Positive rate at 50% Missed Detection)</th>
+              <td>{this.props.submission.falseAlarmRate}</td>
             </tr>
           </tbody>
         </table>

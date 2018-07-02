@@ -59,11 +59,12 @@ const reducer = (state = initialState, action) => {
     case 'FETCH_SUBMISSIONS_SUCCESS':
       return Object.assign({}, state, {
         submissions1: action.submissions.filter(s => s.stage === 1),
-        submissions2: action.submissions.filter(s => s.stage === 2)
+        submissions2: action.submissions.filter(s => s.stage === 2),
+        submissions3: action.submissions.filter(s => s.stage === 3)
       })
     case 'SWITCH_LEADERBOARD_TAB':
       return Object.assign({}, state, {
-        activeTab: state.activeTab === 1 ? 2 : 1
+        activeTab: state.activeTab === 1 ? 2 : state.activeTab === 2 ?  3 : 1
       })
     case 'FETCH_STAGES_SUCCESS':
       return Object.assign({}, state, {

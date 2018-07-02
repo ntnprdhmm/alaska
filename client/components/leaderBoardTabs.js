@@ -8,6 +8,7 @@ class LeaderBoardTabs extends Component {
       <div class="leaderboard-tabs">
         <LeaderBoardTab text='Stage 1' active={this.props.activeTab === 1} onClick={this.props.onSwitch} />
         <LeaderBoardTab text='Stage 2' active={this.props.activeTab === 2} onClick={this.props.onSwitch} />
+        <LeaderBoardTab text='Stage 3' active={this.props.activeTab === 3} onClick={this.props.onSwitch} />
       </div>
     )
   }

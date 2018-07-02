@@ -1,11 +1,7 @@
 import { h, Component } from 'preact'
-import { connect } from 'preact-redux'
-import reducer from '../reducer'
-import * as actions from '../actions'
 import ScrollableAnchor from 'react-scrollable-anchor'
 import List from './list'
 
-@connect(reducer, actions)
 class Material extends Component {
   render () {
     const list = {
@@ -36,24 +32,14 @@ class Material extends Component {
           <div class="container">
             <div class="col-lg-10 margin-auto">
               <h2 class="text-center">Material</h2>
-              {
-                this.props.jwtPayload
-                  ?
-		    <div>
-                      <div class="text-justify">
-                        <p>
-                          <List {...list} />
-                        </p>
-                      </div>
-                      <a href="" class="btn btn-default btn-lg">
-                        Download
-                      </a>
-		    </div>
-		    :
-                    <p class="green-front">
-                      You must be authenticated.
-	            </p>
-              }
+              <div class="text-justify">
+                <p>
+                  <List {...list} />
+                </p>
+              </div>
+              <a href="" class="btn btn-default btn-lg">
+                Download
+              </a>
             </div>
           </div>
         </section>

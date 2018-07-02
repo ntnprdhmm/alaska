@@ -23,16 +23,23 @@ class Timeline extends Component {
                       <div class="timeline">
                         <div class="timeline-container timeline-container--left">
                           <div class="timeline-content">
-                            <h2>Stage 1</h2>
+                            <h2>Step 1 (Warm up)</h2>
                             <p><b>From</b> {new Date(parseInt(stages[0].start) * 1000).toLocaleString()}</p>
                             <p><b>To</b> {new Date(parseInt(stages[0].end) * 1000).toLocaleString()}</p>
                           </div>
                         </div>
                         <div class="timeline-container timeline-container--right">
                           <div class="timeline-content">
-                            <h2>Stage 2</h2>
+                            <h2>Step 2 (Challenge)</h2>
                             <p><b>From</b> {new Date(parseInt(stages[1].start) * 1000).toLocaleString()}</p>
                             <p><b>To</b> {new Date(parseInt(stages[1].end) * 1000).toLocaleString()}</p>
+                          </div>
+                        </div>
+                        <div class="timeline-container timeline-container--left">
+                          <div class="timeline-content">
+                            <h2>Step 3 (for fun)</h2>
+                            <p><b>From</b> {new Date(parseInt(stages[2].start) * 1000).toLocaleString()}</p>
+                            <p><b>To</b> {new Date(parseInt(stages[2].end) * 1000).toLocaleString()}</p>
                           </div>
                         </div>
                       </div>

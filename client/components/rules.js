@@ -21,19 +21,21 @@ class Rules extends Component {
             results, when contest closes, will be adjusted with evaluation over the whole testing set.
           </div>,
           <div>
-            The ranking is made using the missed detection empirical probability for a fixed empirical
+            The ranking is made using the empirical probability of missed detection for a fixed empirical
             probability of false alarm of 5%. We will count of many images with hidden data are incorrectly
-            classified as not containing hidden data when 5% of images that does not contain hidden data are
-            incorrectly classified as containing hidden data
+	    classified as covers when exactly 5% of cover images are incorrectly classified as containing hidden data.
           </div>,
           <div>
-            Each submission is made by uploading a file containing the image numbers ordered from the most
+            Each submission is made by submitting an answer containing the image numbers ordered from the most
             likely containing hidden data to the less likely one. This will allow us to process submission to
             compute false alarm and missed detection probabilities when adjusting the threshold ; typically to
             draw ROC curves.
           </div>,
           <div>
-            An exemple of valid submission file is provided in the <b>submit an answer</b> section.
+            An example of valid submission file is provided in the <b>submit an answer</b> section.
+          </div>,
+          <div>
+            During the warm-up phase #1 a list of 200 images will be used with the first hundreds being cover and the last hundred being stego media.
           </div>
       ]
     }

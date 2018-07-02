@@ -1,3 +1,6 @@
+/* 42DCA3 --> 2070de */
+/* 424242 --> 1e3c78 */
+
 * {
   box-sizing: border-box;
 }
@@ -17,7 +20,7 @@ html {
 }
 
 .green-front {
-  color: #42DCA3;
+  color: #2070de;
 }
 
 .main-container, #outer {
@@ -50,12 +53,12 @@ a, .btn-link {
   -webkit-transition: all 0.2s ease-in-out;
   -moz-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
-  color: #42DCA3;
+  color: #40a4ff;
 }
 
 a:focus, .btn-link:focus, a:hover, .btn-link:hover {
   text-decoration: none;
-  color: #1d9b6c;
+  color: #308cff;
 }
 
 .login-footer-actions {
@@ -209,6 +212,27 @@ a:focus, .btn-link:focus, a:hover, .btn-link:hover {
   background-size: cover;
 }
 
+
+.submit-section {
+  color: white;
+  background: url("../images/alaska3.jpg") no-repeat center center scroll;
+  background-color: black;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+.ack-section {
+  color: white;
+  background: url("../images/alaska_ack.jpg") no-repeat center center scroll;
+  background-color: black;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
 @media (min-width: 992px) {
   .content-section {
     padding-top: 120px;
@@ -227,16 +251,21 @@ a:focus, .btn-link:focus, a:hover, .btn-link:hover {
 }
 
 .btn-default {
-  color: #42DCA3;
-  border: 1px solid #42DCA3;
-  background-color: transparent;
+  color: black;
+  border: 1px solid #2070de;
+  outline: none;
+  background: rgba(32, 112, 222, 0.4);
+/*  background-color: #2070de; */
+/*  color: #2070de;
+  border: 1px solid #2070de;
+  background-color: transparent;*/
 }
 
 .btn-default:focus, .btn-default:hover {
-  color: black;
-  border: 1px solid #42DCA3;
+  color: white;
   outline: none;
-  background-color: #42DCA3;
+  background: rgba(32, 112, 222, 0.7);
+/*  background-color: #2070de; */
 }
 
 .btn-center {
@@ -320,7 +349,7 @@ img::-moz-selection {
 }
 
 .custom-list-item:before { /* the custom styled bullets */
-  background-color: #42DCA3;
+  background-color: #2070de;
   content: "";
   display: inline-block;
   margin-right: 10px;
@@ -331,21 +360,21 @@ img::-moz-selection {
 
 .last-sub-container {
   margin-top: 50px;
-  background-color: #42DCA3;
+  background: rgba(32, 112, 222, 0.55);
   color: black;
   padding: 10px 20px;
 }
 
 .leaderboard-tabs {
-  border: 2px solid #42DCA3;
+  border: 2px solid #2070de;
 }
 
 .leaderboard-tab {
   display: inline-block;
-  width: 50%;
+  width: 33%;
   padding: 10px 20px;
   text-align: center;
-  color: #42DCA3;
+  color: #2070de;
 }
 
 .leaderboard-tab:hover, .leaderboard-table th:hover {
@@ -354,7 +383,7 @@ img::-moz-selection {
 
 .leaderboard-tab--active, .leaderboard-tab:hover {
   color: black;
-  background-color: #42DCA3;
+  background-color: #2070de;
   -webkit-transition: all 0.2s ease-in-out;
   -moz-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
@@ -389,7 +418,7 @@ img::-moz-selection {
 .leaderboard-table tbody::-webkit-scrollbar-thumb
 {
 	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
-	background-color: #42DCA3;
+	background-color: #2070de;
 }
 
 .leaderboard-table tr {

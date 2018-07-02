@@ -5,11 +5,11 @@ import List from './list'
 class Acknowledgements extends Component {
   render () {
     const list1 = {
-      text: `The ALASKA contest is inspired by the BOSS competition has been jointly organized by:`,
+      text: `The ALASKA contest has been, in part, inspired by the BOSS competition and has been jointly and proudly organized by:`,
       elements: [
         <div>
           <a href='http://lm2s.utt.fr/en/_plugins/mypage/mypage/content/cogrannr.html'>Rémi Cogranne</a>,
-          from Troyes University of Technology
+          from Troyes University of Technology.
         </div>,
         <div>
           Quentin Giboulot, from Troyes University of Technology (PhD student of Rémi Cogranne, who
@@ -35,7 +35,7 @@ class Acknowledgements extends Component {
           of their raw images.
         </div>,
         <div>
-          The computer ressource departement of Troyes University of Technology who accepted hosting
+          The computer resources department of Troyes University of Technology who accepted hosting
           the website and the material.
         </div>
       ]
@@ -43,7 +43,7 @@ class Acknowledgements extends Component {
 
     return (
       <ScrollableAnchor id="acknowledgements">
-        <section class="content-section text-center">
+        <section class="ack-section content-section text-center">
           <div class="container">
             <div class="row">
               <div class="col-lg-10 margin-auto">
