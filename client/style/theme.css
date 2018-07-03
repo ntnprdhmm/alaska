@@ -251,7 +251,7 @@ a:focus, .btn-link:focus, a:hover, .btn-link:hover {
 }
 
 .btn-default {
-  color: black;
+  color: #fff;
   border: 1px solid #2070de;
   outline: none;
   background: rgba(32, 112, 222, 0.4);
@@ -434,4 +434,8 @@ img::-moz-selection {
 .disclaimers {
   line-height: 66px;
   margin-top: 50px;
+}
+
+#mainNav .navbar-nav .nav-item {
+  margin-right: 10px !important;
 }

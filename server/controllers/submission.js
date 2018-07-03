@@ -11,7 +11,7 @@ const get = (req, res) => {
     }]
   })
     .then(submissions => res.json({ submissions }))
-    .catch(_ => res.status(500).json({ message: 'server error' }))
+    .catch(err => res.status(500).json({ message: 'server error', err }))
 }
 
 const post = async (req, res) => {
