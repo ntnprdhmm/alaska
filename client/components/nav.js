@@ -18,6 +18,9 @@ class Nav extends Component {
   componentWillUnmount () {
     removeEventListener('scroll', this.onScroll)
   }
+  redirectToBlog () {
+    window.location.replace(`${window.location.origin}/blog.html`)
+  }
   render () {
     return (
       <nav class={`navbar navbar-expand-lg navbar-light fixed-top ${this.state.black ? 'navbar-shrink' : ''}`} id="mainNav">
@@ -34,6 +37,11 @@ class Nav extends Component {
               <NavItem itemId='submit' text='Submit an answer' />
               <NavItem itemId='leaderboard' text='LeaderBoard' />
               <NavItem itemId='acknowledgements' text='Acknowledgements' />
+              <li class="nav-item">
+                <a class="nav-link" onClick={this.redirectToBlog}>
+                  Blog
+                </a>
+              </li>
             </ul>
             {
               this.props.jwtPayload
